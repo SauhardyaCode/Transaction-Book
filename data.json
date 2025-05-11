@@ -1,0 +1,70 @@
+{
+    "unsettled": {
+        "Debojyoti": -30,
+        "Sahid": 20
+    },
+    "transaction": {
+        "06 May, 2025": {
+            "Groww": 200,
+            "Temple": 51,
+            "Chicken Pakora": {
+                "me": 15,
+                "Debojyoti": 15
+            },
+            "#Return": {},
+            "#Borrow": {},
+            "#Total": 281
+        },
+        "07 May, 2025": {
+            "Coffee": {
+                "me": 10,
+                "Debojyoti": 10
+            },
+            "Groww": -200,
+            "Idli": {
+                "me": 30,
+                "Sahid": 30
+            },
+            "Brown Bread": 19,
+            "Vada": {
+                "Debojyoti": 40
+            },
+            "Auto Fare": {
+                "Me": 10,
+                "Debojyoti": 10
+            },
+            "#Return": {
+                "Debojyoti": -148,
+                "Sahid": -20
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Sahid": {
+                        "Auto Fare": 10,
+                        "Lassi": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Total": -209
+        },
+        "08 May, 2025": {
+            "Farewell Food": 100,
+            "Ice-cream": {
+                "me": 101,
+                "Debojyoti": 101
+            },
+            "#Return": {
+                "Sahid": 20
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {
+                    "Debojyoti": {
+                        "Zepto Payment": -200
+                    }
+                }
+            }
+        }
+    }
+}
