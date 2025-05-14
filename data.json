@@ -1,7 +1,8 @@
 {
     "unsettled": {
         "Debojyoti": -30,
-        "Sahid": 20
+        "Sahid": 20,
+        "Arunaditya": -5
     },
     "transaction": {
         "06 May, 2025": {
@@ -58,10 +59,19 @@
                 "Sahid": 20
             },
             "#Borrow": {
-                "#Null": {},
+                "#Null": {
+                    "Arunaditya": {
+                        "Cakes": 30
+                    }
+                },
                 "#Not-Null": {
                     "Debojyoti": {
-                        "Zepto Payment": -200
+                        "Zepto Payment": -200,
+                        "Coca Cola": 20
+                    },
+                    "Sahid": {
+                        "Lassi": 30,
+                        "Taxi": 10
                     }
                 }
             }
