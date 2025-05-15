@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox as msg
 import tkcalendar as tk_cal
 from datetime import datetime
+from PIL import Image, ImageTk
 import json
 import os
 import math
@@ -26,9 +27,20 @@ bg_for_heading = bg_colors[5]
 fg_for_sub_heading = fg_colors[0]
 
 special_keys = ("#Borrow", "#Null", "#Not-Null", "#Return", "#Total")
+fresh_data = {
+                special_keys[0]: {
+                    special_keys[1]: {},
+                    special_keys[2]: {}
+                },
+                special_keys[3]: {},
+                special_keys[4]: 0
+            }
+
+PATH = os.path.dirname(__file__)
+delete_image = Image.open(PATH+"/delete.png").resize((25,25))
 
 def read_data():
-    with open(os.path.dirname(__file__)+"/data.json") as f:
+    with open(PATH+"/data.json") as f:
         return json.load(f)
 
 class BroilerPlate(tk.Tk):
@@ -120,7 +132,10 @@ class AddTransWindow:
         instructions[0].set(instruction_str[0][1])
         instructions[1].set(instruction_str[1][1])
         self.main_frame = main_frame
-        self.popup = None
+        self.date_popup = None
+        self.transaction_popup = None
+        self.borrow_popup = None
+        self.return_popup = None
         if date_selected.get()=="":
             date_selected.set(datetime.today().strftime(date_format))
         self.create_elememts()
@@ -140,7 +155,7 @@ class AddTransWindow:
         self.main_scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.bind('<Configure>', lambda e: self.canvas.itemconfig(self.canvas_window, width=e.width))
         self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
-
+        
         # Main Elements
         self.title = tk.Label(self.main_scrollable_frame, text="Add Transaction", font=("Verdana", 18, "underline"), bg=bg_for_main_frame)
         self.input_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
@@ -155,7 +170,7 @@ class AddTransWindow:
         self.options_frame = tk.Frame(self.input_frame, bg=bg_for_main_frame)
         self.addBorrBtn = tk.Button(self.options_frame, text="Add Borrowings", font=("Robota", 13), cursor="hand2")
         self.addRetBtn = tk.Button(self.options_frame, text="Add Returns", font=("Robota", 13), cursor="hand2")
-        self.addTrnBtn = tk.Button(self.options_frame, text="Add Other Transactions", font=("Robota", 13), cursor="hand2")
+        self.addTrnBtn = tk.Button(self.options_frame, text="Add Other Transactions", font=("Robota", 13), cursor="hand2", command=self.add_general_transaction)
 
         self.dataLbl = tk.Label(self.input_frame, text="Your Transactions on this day", font=("Robota",15), bg=bg_for_main_frame)
         self.data_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
@@ -181,15 +196,16 @@ class AddTransWindow:
         self.data_frame.pack(padx=30, ipadx=100, ipady=10)
 
     def showDatePopup(self):
-        if self.popup:
-            self.popup.destroy()
-        self.popup = tk.Toplevel(self.main_frame)
-        self.popup.title("Date Picker")
-        self.popup.geometry("300x300+500+200")
+        if self.date_popup:
+            self.date_popup.destroy()
+        self.date_popup = tk.Toplevel(self.main_frame)
+        self.date_popup.title("Date Picker")
+        self.date_popup.geometry("300x300+500+200")
+        self.date_popup.resizable(0,0)
         dateSelected = datetime.strptime(date_selected.get(), date_format).date()
-        self.dateInp = tk_cal.Calendar(self.popup, selectmode='day', date_pattern='dd-mm-yyyy', width=10, bg=bg_for_main_frame, borderwidth=2,
+        self.dateInp = tk_cal.Calendar(self.date_popup, selectmode='day', date_pattern='dd-mm-yyyy', width=10, bg=bg_for_main_frame, borderwidth=2,
                                        day=dateSelected.day, month=dateSelected.month, year=dateSelected.year)
-        self.btn_frame = tk.Frame(self.popup)
+        self.btn_frame = tk.Frame(self.date_popup)
         self.dateOkBtn = tk.Button(self.btn_frame, text="Set", font=("Robota", 10),command=lambda:self.setDate(0))
         self.dateCancelBtn = tk.Button(self.btn_frame, text="Reset", font=("Robota", 10),command=lambda:self.setDate(1))
         self.dateInp.pack()
@@ -407,7 +423,143 @@ class AddTransWindow:
                     self.transaction_variables.append([title, money, money_sign])
                     self.transaction_inputs.append([elemTitle, money_entry_element])
                     transaction_sl_no+=1
+
+    def add_general_transaction(self):
+        self.add_transaction_variables = []
+        self.add_transaction_elements = []
+
+        if self.transaction_popup:
+            self.transaction_popup.destroy()
+        self.transaction_popup = tk.Toplevel(self.main_frame, bg=bg_for_left_frame)
+        self.transaction_popup.title("Add General Transaction")
+        self.transaction_popup.geometry("500x300+500+200")
+        self.transaction_popup.resizable(0, 0)
+
+        # Scrollable Canvas Setup
+        canvas = tk.Canvas(self.transaction_popup, bg=bg_for_left_frame)
+        scrollbar = tk.Scrollbar(self.transaction_popup, orient="vertical", command=canvas.yview)
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        scrollable_frame = tk.Frame(canvas, bg=bg_for_left_frame)
+        canvas_window = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        
+        scrollable_frame.bind("<Configure>",lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.bind('<Configure>', lambda e: canvas.itemconfig(canvas_window, width=e.width))
+
+        # Your transaction input fields
+        self.title_var_for_add_transaction = tk.StringVar()
+        self.amount_var_for_add_transaction = tk.IntVar()
+
+        titleLabel = tk.Label(scrollable_frame, text="Enter Title", font=("Verdana", 15), bg=bg_for_left_frame)
+        titleEntry = tk.Entry(scrollable_frame, font=("Times New Roman", 15), textvariable=self.title_var_for_add_transaction, justify='center')
+        moneyLabel = tk.Label(scrollable_frame, text="Enter Amount", font=("Verdana", 15), bg=bg_for_left_frame)
+        moneyEntry = tk.Entry(scrollable_frame, font=("Times New Roman", 15), textvariable=self.amount_var_for_add_transaction, width=8, justify='center')
+        entry_frame = tk.Frame(scrollable_frame, bg=bg_for_left_frame)
+        btn_frame = tk.Frame(scrollable_frame, bg=bg_for_left_frame)
+        addPersonBtn = tk.Button(btn_frame, text="+ Add Person", font=("Verdana", 10), command= lambda:self.add_person_to_transaction_add(moneyEntry, entry_frame, btn_frame))
+        saveBtn = tk.Button(btn_frame, text="Save Changes", font=("Verdana", 10), command=self.save_transaction_add)
+
+        # Packing elements into scrollable frame
+        titleLabel.pack(pady=(10, 5))
+        titleEntry.pack(padx=20, ipady=5, fill='x')
+        moneyLabel.pack(pady=(10, 5))
+        moneyEntry.pack(padx=20, ipady=5)
+        btn_frame.pack(pady=15)
+        addPersonBtn.grid(row=0, column=0, ipadx=10, ipady=2, padx=10)
+        saveBtn.grid(row=0, column=1, ipadx=10, ipady=2, padx=10)
     
+    def add_person_to_transaction_add(self, moneyEntry, entry_frame, add_btn_frame):
+        moneyEntry.pack_forget()
+        entry_frame.pack(pady=5, fill='x')
+        variables = [tk.StringVar(), tk.IntVar()]
+        variables[0].set("-Select-")
+        combobox_values = list(self.data_read_from_file["unsettled"].keys())
+        if len(self.add_transaction_variables):
+            combobox_values.insert(0, "Me")
+
+        entry_sub_frame = tk.Frame(entry_frame, bg=bg_for_left_frame)
+        personSelect = ttk.Combobox(entry_sub_frame, textvariable=variables[0], values=combobox_values, width=13, font=("Helvetica", 13))
+        amountEntry = tk.Entry(entry_sub_frame, font=("Times New Roman", 15), textvariable=variables[1], width=8, justify='center')
+        photo = ImageTk.PhotoImage(delete_image)
+        deleteBtn = tk.Button(entry_sub_frame, image=photo, bg=bg_for_left_frame, bd=0, command=lambda index=len(self.add_transaction_variables): self.del_person_from_transaction_add(index, moneyEntry, entry_frame, add_btn_frame))
+        deleteBtn.image = photo
+
+        entry_sub_frame.pack(pady=5)
+        personSelect.grid(row=0, column=0, padx=10)
+        amountEntry.grid(row=0, column=1, padx=10)
+        deleteBtn.grid(row=0, column=3, padx=10)
+
+        personSelect.config(state='readonly')
+        self.add_transaction_variables.append(variables)
+        self.add_transaction_elements.append(entry_sub_frame)
+    
+    def del_person_from_transaction_add(self, sl_no, moneyEntry, entry_frame, add_btn_frame):
+        self.add_transaction_elements[sl_no].destroy()
+        self.add_transaction_variables[sl_no] = None
+        self.add_transaction_elements[sl_no] = None
+
+        for i,x in enumerate(self.add_transaction_elements):
+            if x:
+                combobox = x.winfo_children()[0]
+                combobox_values = list(self.data_read_from_file["unsettled"].keys())
+                combobox.config(values=combobox_values)
+                if self.add_transaction_variables[i][0].get() == "Me":
+                    self.add_transaction_variables[i][0].set("-Select-")
+                return
+        self.add_transaction_elements = []
+        self.add_transaction_variables = []
+        entry_frame.pack_forget()
+        add_btn_frame.pack_forget()
+        moneyEntry.pack(padx=20, ipady=5)
+        add_btn_frame.pack(pady=15)
+
+    def save_transaction_add(self):
+        data_to_be_written = self.data_read_from_file
+        try:
+            data_by_date = data_to_be_written["transaction"][date_selected.get()]
+        except KeyError:
+            data_to_be_written["transaction"][date_selected.get()] = fresh_data
+            data_by_date = fresh_data
+        
+        data_list_by_date = list(data_by_date.items())
+        existing_titles = []
+        for key, _ in data_list_by_date:
+            if not key.startswith('#'):
+                existing_titles.append(key)
+        
+        new_title = self.title_var_for_add_transaction.get().strip().replace('#','')
+        if new_title in existing_titles:
+            msg.showerror(f"Duplicate Title ({new_title})", "This title already exists on this day's transaction")
+            return
+
+        if (self.add_transaction_variables):
+            person_list = []
+            person_dict = {}
+            for variables in self.add_transaction_variables:
+                if variables:
+                    person, amount = variables
+                    person_dict[person.get()] = amount.get()
+                    person_list.append(person.get())
+            if len(person_list)!=len(set(person_list)):
+                msg.showerror(f"Duplicate Person", "Remove same person names from multiple fields")
+                return
+            data_to_be_written["transaction"][date_selected.get()][new_title] = person_dict
+        else:
+           data_to_be_written["transaction"][date_selected.get()][new_title] = self.amount_var_for_add_transaction.get() 
+        
+        for key, _ in data_list_by_date:
+            if key.startswith('#'):
+                del data_to_be_written["transaction"][date_selected.get()][key]
+
+        for key, value in data_list_by_date:
+            if key.startswith('#'):
+                data_to_be_written["transaction"][date_selected.get()][key] = value
+        self.write_data(data_to_be_written)
+        self.transaction_popup.destroy()
+        self.show_transactions(date_selected.get())
+   
     def set_transaction_color(self, amount, sign, element, neutralize=False):
         amount_value = abs(amount.get())*sign
         if neutralize:
@@ -425,7 +577,7 @@ class AddTransWindow:
             self.dateInp.selection_set(datetime.today())
         else:
             date_selected.set(self.dateInp.selection_get().strftime(date_format))
-            self.popup.destroy()
+            self.date_popup.destroy()
             self.show_transactions(date_selected.get())
     
     def edit_save_transaction(self, transaction_sl_no, net_sl_no):
@@ -819,12 +971,13 @@ class AddTransWindow:
 
     def write_data(self, data):
         self.calculate_total()
-        with open(os.path.dirname(__file__)+"/data.json", 'w') as f:
+        with open(PATH+"/data.json", 'w') as f:
             return json.dump(data, f, indent=4)
+
 
 if __name__ == "__main__":
     obj = BroilerPlate()
     obj.show()
 
-
+#add options needs to be added now
 #sub-edit options needs to be added now

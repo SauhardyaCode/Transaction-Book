@@ -34,7 +34,7 @@
                 "Debojyoti": 40
             },
             "Auto Fare": {
-                "Me": 10,
+                "Me": -10,
                 "Debojyoti": 10
             },
             "#Return": {
@@ -50,7 +50,7 @@
                 },
                 "#Not-Null": {}
             },
-            "#Total": -114
+            "#Total": -134
         },
         "08 May, 2025": {
             "Farewell Food": 100,
@@ -58,6 +58,14 @@
                 "Me": 10,
                 "Debojyoti": 10
             },
+            "Bazooka": -120,
+            "Flowers": {
+                "Debojyoti": 25,
+                "Me": -60,
+                "Sahid": 30,
+                "Arunaditya": 10
+            },
+            "Flower": 10,
             "#Return": {
                 "Sahid": 20
             },
@@ -74,7 +82,15 @@
                     }
                 }
             },
-            "#Total": 180
+            "#Total": 75
+        },
+        "16 May, 2025": {
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 0
         }
     }
 }
