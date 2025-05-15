@@ -903,7 +903,7 @@ class AddTransWindow:
                     person_var, amount_var = sub_variables
                     person = list(data_for_title.keys())[j]
                     person_var.set(person)
-                    amount_var.set(data_for_title[person])
+                    amount_var.set(abs(data_for_title[person]))
             else:
                 money_var.set(abs(data_for_title))
         
