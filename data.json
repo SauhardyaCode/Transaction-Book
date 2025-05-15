@@ -13,7 +13,10 @@
                 "Debojyoti": 15
             },
             "#Return": {},
-            "#Borrow": {},
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
             "#Total": 281
         },
         "07 May, 2025": {
@@ -35,8 +38,8 @@
                 "Debojyoti": 10
             },
             "#Return": {
-                "Debojyoti": 148,
-                "Sahid": 20
+                "Sahid": -48,
+                "Arunaditya": -25
             },
             "#Borrow": {
                 "#Null": {
@@ -47,13 +50,13 @@
                 },
                 "#Not-Null": {}
             },
-            "#Total": -209
+            "#Total": -114
         },
         "08 May, 2025": {
             "Farewell Food": 100,
             "Ice-cream": {
-                "Me": 101,
-                "Debojyoti": 101
+                "Me": 10,
+                "Debojyoti": 10
             },
             "#Return": {
                 "Sahid": 20
@@ -65,16 +68,13 @@
                     }
                 },
                 "#Not-Null": {
-                    "Debojyoti": {
-                        "Zepto Payment": -200,
-                        "Coca Cola": 20
-                    },
                     "Sahid": {
                         "Lassi": 30,
                         "Taxi": 10
                     }
                 }
-            }
+            },
+            "#Total": 180
         }
     }
 }
