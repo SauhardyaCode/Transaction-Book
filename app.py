@@ -26,6 +26,8 @@ bg_for_entry = bg_colors[4]
 bg_for_heading = bg_colors[5]
 fg_for_sub_heading = fg_colors[0]
 
+select_text = "-Select-"
+null_options = ["Someone paid for you", "Someone lend/borrowed money"]
 special_keys = ("#Borrow", "#Null", "#Not-Null", "#Return", "#Total")
 fresh_data = {
                 special_keys[0]: {
@@ -168,8 +170,8 @@ class AddTransWindow:
 
         self.addLbl = tk.Label(self.input_frame, text="Add Transactions on this Day", font=("Robota",15), bg=bg_for_main_frame)
         self.options_frame = tk.Frame(self.input_frame, bg=bg_for_main_frame)
-        self.addBorrBtn = tk.Button(self.options_frame, text="Add Borrowings", font=("Robota", 13), cursor="hand2")
-        self.addRetBtn = tk.Button(self.options_frame, text="Add Returns", font=("Robota", 13), cursor="hand2")
+        self.addBorrBtn = tk.Button(self.options_frame, text="Add Borrowings", font=("Robota", 13), cursor="hand2", command=self.add_borrow_transaction)
+        self.addRetBtn = tk.Button(self.options_frame, text="Add Returns", font=("Robota", 13), cursor="hand2", command=self.add_return_transaction)
         self.addTrnBtn = tk.Button(self.options_frame, text="Add Other Transactions", font=("Robota", 13), cursor="hand2", command=self.add_general_transaction)
 
         self.dataLbl = tk.Label(self.input_frame, text="Your Transactions on this day", font=("Robota",15), bg=bg_for_main_frame)
@@ -267,11 +269,11 @@ class AddTransWindow:
 
                         if (not case_null_title and isNull):
                             case_null_title=1
-                            elemTitle = tk.Label(self.data_frame, font=("Times New Roman", 15), text="Someone paid for you", bg=bg_for_main_frame, fg=fg_for_sub_heading)
+                            elemTitle = tk.Label(self.data_frame, font=("Times New Roman", 15), text=null_options[0], bg=bg_for_main_frame, fg=fg_for_sub_heading)
                             elemTitle.pack(anchor='w', pady=(10,0))
                         elif (not case_not_null_title and not isNull):
                             case_not_null_title=1
-                            elemTitle = tk.Label(self.data_frame, font=("Times New Roman", 15), text="Someone lend/borrowed money", bg=bg_for_main_frame, fg=fg_for_sub_heading)
+                            elemTitle = tk.Label(self.data_frame, font=("Times New Roman", 15), text=null_options[1], bg=bg_for_main_frame, fg=fg_for_sub_heading)
                             elemTitle.pack(anchor='w', pady=(10,0))
 
                         elem = tk.Frame(self.data_frame, bg=bg_for_main_frame, borderwidth=1, relief="solid")
@@ -424,6 +426,254 @@ class AddTransWindow:
                     self.transaction_inputs.append([elemTitle, money_entry_element])
                     transaction_sl_no+=1
 
+    def add_return_transaction(self):
+        self.add_return_variables = []
+        self.add_return_elements = []
+
+        if self.return_popup:
+            self.return_popup.destroy()
+        self.return_popup = tk.Toplevel(self.main_frame, bg=bg_for_left_frame)
+        self.return_popup.title(f"Add Return Transaction - {date_selected.get()}")
+        self.return_popup.geometry("500x300+500+200")
+        self.return_popup.resizable(0, 0)
+
+        # Scrollable Canvas Setup
+        canvas = tk.Canvas(self.return_popup, bg=bg_for_left_frame)
+        scrollbar = tk.Scrollbar(self.return_popup, orient="vertical", command=canvas.yview, width=20)
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        scrollable_frame = tk.Frame(canvas, bg=bg_for_left_frame)
+        canvas_window = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        
+        scrollable_frame.bind("<Configure>",lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.bind('<Configure>', lambda e: canvas.itemconfig(canvas_window, width=e.width))
+
+        entry_frame = tk.Frame(scrollable_frame, bg=bg_for_left_frame)
+        personLabel = tk.Label(entry_frame, text="Person", font=("Verdana", 12), bg=bg_for_left_frame)
+        amountLabel = tk.Label(entry_frame, text="Amount", font=("Verdana", 12), bg=bg_for_left_frame)
+        photo = ImageTk.PhotoImage(delete_image)
+        space_occupier = tk.Button(entry_frame, image=photo, bg=bg_for_left_frame, bd=0, activebackground=bg_for_left_frame)
+        self.add_return_label = [personLabel, amountLabel, space_occupier] 
+        
+        add_btn_frame = tk.Frame(scrollable_frame, bg=bg_for_left_frame)
+        addTitleBtn = tk.Button(add_btn_frame, text="+ Add Person", font=("Verdana", 10), command= lambda:self.add_person_to_return_add(entry_frame))
+        saveBtn = tk.Button(add_btn_frame, text="Save Changes", font=("Verdana", 10), command=self.save_return_add)
+
+        # Packing elements into scrollable frame
+        add_btn_frame.pack(pady=15)
+        addTitleBtn.grid(row=0, column=0, ipadx=10, ipady=2, padx=10)
+        saveBtn.grid(row=0, column=1, ipadx=10, ipady=2, padx=10)
+        entry_frame.pack(pady=5, padx=20)
+    
+    def add_person_to_return_add(self, entry_frame):
+        variables = [tk.StringVar(), tk.IntVar()]
+        personSelect = ttk.Combobox(entry_frame, textvariable=variables[0], values=list(self.data_read_from_file["unsettled"].keys()), width=13, font=("Helvetica", 13))
+        amountEntry = tk.Entry(entry_frame, font=("Times New Roman", 15), textvariable=variables[1], width=8, justify='center')
+
+        photo = ImageTk.PhotoImage(delete_image)
+        deleteBtn = tk.Button(entry_frame, image=photo, bg=bg_for_left_frame, bd=0, command=lambda index=len(self.add_return_variables): self.del_person_from_return_add(index))
+        deleteBtn.image = photo
+
+        self.add_return_variables.append(variables)
+        self.add_return_elements.append([personSelect, amountEntry, deleteBtn])
+
+        row_no = len(self.add_return_elements)
+        self.add_return_label[0].grid(row=0, column=0, padx=(0,30), pady=5)
+        self.add_return_label[1].grid(row=0, column=1, padx=30, pady=5)
+        self.add_return_label[2].grid(row=0, column=2, padx=(30,0), pady=5)
+        personSelect.grid(row=row_no, column=0, padx=(0,30), pady=5)
+        amountEntry.grid(row=row_no, column=1, padx=30, pady=5)
+        deleteBtn.grid(row=row_no, column=2, padx=(30,0), pady=5)
+
+        personSelect.config(state='readonly')
+        variables[0].set(select_text)
+    
+    def del_person_from_return_add(self, sl_no):
+        for elem in self.add_return_elements[sl_no]:
+            elem.destroy()
+        self.add_return_variables[sl_no] = None
+        self.add_return_elements[sl_no] = None
+
+        for i,x in enumerate(self.add_return_elements):
+            if x:
+                return
+        self.add_return_elements = []
+        self.add_return_variables = []
+        for elem in self.add_return_label:
+            elem.grid_forget()
+    
+    def save_return_add(self):
+        data_to_be_written = self.data_read_from_file
+        try:
+            data_by_date = data_to_be_written["transaction"][date_selected.get()]
+        except KeyError:
+            data_to_be_written["transaction"][date_selected.get()] = fresh_data
+            data_by_date = fresh_data
+        
+        data_list_by_date = list(data_by_date[special_keys[3]].items())
+        existing_persons = []
+        for key, _ in data_list_by_date:
+            existing_persons.append(key)
+        
+        if (self.add_return_variables):
+            person_list = []
+            for variables in self.add_return_variables:
+                if variables:
+                    person, amount = variables
+                    if person.get()==select_text or not amount.get():
+                        msg.showerror(f"Empty Fields", "Fill out all fields else delete the fields!")
+                        return
+                    person_list.append(person.get())
+                    data_to_be_written["transaction"][date_selected.get()][special_keys[3]][person.get()] = amount.get()
+
+            if len(person_list)!=len(set(person_list)):
+                msg.showerror("Duplicate Persons", "Remove same person from multiple fields")
+                return
+            for person in person_list:
+                if person in existing_persons:
+                    msg.showerror(f"Duplicate Person ({person})", "This person already exists on this day's return transaction!")
+                    return
+        else:
+           self.return_popup.destroy()
+
+        self.write_data(data_to_be_written)
+        self.return_popup.destroy()
+        self.show_transactions(date_selected.get())
+
+    def add_borrow_transaction(self):
+        self.add_borrow_variables = []
+        self.add_borrow_elements = []
+
+        if self.borrow_popup:
+            self.borrow_popup.destroy()
+        self.borrow_popup = tk.Toplevel(self.main_frame, bg=bg_for_left_frame)
+        self.borrow_popup.title(f"Add Borrow Transaction - {date_selected.get()}")
+        self.borrow_popup.geometry("500x300+500+200")
+        self.borrow_popup.resizable(0, 0)
+
+        # Scrollable Canvas Setup
+        canvas = tk.Canvas(self.borrow_popup, bg=bg_for_left_frame)
+        scrollbar = tk.Scrollbar(self.borrow_popup, orient="vertical", command=canvas.yview, width=20)
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        scrollable_frame = tk.Frame(canvas, bg=bg_for_left_frame)
+        canvas_window = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        
+        scrollable_frame.bind("<Configure>",lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.bind('<Configure>', lambda e: canvas.itemconfig(canvas_window, width=e.width))
+
+        # Your transaction input fields
+        self.null_var_for_add_borrow = tk.StringVar()
+        self.person_var_for_add_borrow = tk.StringVar()
+        self.null_var_for_add_borrow.set(select_text)
+        self.person_var_for_add_borrow.set(select_text)
+
+        nullLabel = tk.Label(scrollable_frame, text="Choose Transaction Type", font=("Verdana", 15), bg=bg_for_left_frame)
+        nullSelect = ttk.Combobox(scrollable_frame, textvariable=self.null_var_for_add_borrow, values=null_options, font=("Helvetica", 13), justify='center')
+        personLabel = tk.Label(scrollable_frame, text="Choose Person", font=("Verdana", 15), bg=bg_for_left_frame)
+        personSelect = ttk.Combobox(scrollable_frame, textvariable=self.person_var_for_add_borrow, values=list(self.data_read_from_file["unsettled"].keys()), font=("Helvetica", 13), justify='center')
+        entry_frame = tk.Frame(scrollable_frame, bg=bg_for_left_frame)
+        add_btn_frame = tk.Frame(scrollable_frame, bg=bg_for_left_frame)
+        addTitleBtn = tk.Button(add_btn_frame, text="+ Add Title", font=("Verdana", 10), command= lambda:self.add_title_to_borrow_add(entry_frame))
+        saveBtn = tk.Button(add_btn_frame, text="Save Changes", font=("Verdana", 10), command=self.save_borrow_add)
+
+        # Packing elements into scrollable frame
+        nullLabel.pack(pady=(10, 5))
+        nullSelect.pack(padx=20, ipady=5, fill='x')
+        personLabel.pack(pady=(10, 5))
+        personSelect.pack(padx=50, ipady=5, fill='x')
+        add_btn_frame.pack(pady=15)
+        addTitleBtn.grid(row=0, column=0, ipadx=10, ipady=2, padx=10)
+        saveBtn.grid(row=0, column=1, ipadx=10, ipady=2, padx=10)
+        entry_frame.pack(pady=5, fill='x')
+
+        nullSelect.config(state='readonly')
+        personSelect.config(state='readonly')
+
+    def add_title_to_borrow_add(self, entry_frame):
+        variables = [tk.StringVar(), tk.IntVar()]
+
+        entry_sub_frame = tk.Frame(entry_frame, bg=bg_for_left_frame)
+        titleEntry = tk.Entry(entry_sub_frame, font=("Times New Roman", 15), textvariable=variables[0], justify='center')
+        amountEntry = tk.Entry(entry_sub_frame, font=("Times New Roman", 15), textvariable=variables[1], width=8, justify='center')
+        photo = ImageTk.PhotoImage(delete_image)
+        deleteBtn = tk.Button(entry_sub_frame, image=photo, bg=bg_for_left_frame, bd=0, command=lambda index=len(self.add_borrow_variables): self.del_title_from_borrow_add(index))
+        deleteBtn.image = photo
+
+        entry_sub_frame.pack(pady=5)
+        titleEntry.grid(row=0, column=0, padx=10)
+        amountEntry.grid(row=0, column=1, padx=10)
+        deleteBtn.grid(row=0, column=3, padx=10)
+
+        self.add_borrow_variables.append(variables)
+        self.add_borrow_elements.append(entry_sub_frame)
+    
+    def del_title_from_borrow_add(self, sl_no):
+        self.add_borrow_elements[sl_no].destroy()
+        self.add_borrow_variables[sl_no] = None
+        self.add_borrow_elements[sl_no] = None
+
+        for i,x in enumerate(self.add_borrow_elements):
+            if x:
+                return
+        self.add_borrow_elements = []
+        self.add_borrow_variables = []
+
+    def save_borrow_add(self):
+        data_to_be_written = self.data_read_from_file
+        try:
+            data_by_date = data_to_be_written["transaction"][date_selected.get()]
+        except KeyError:
+            data_to_be_written["transaction"][date_selected.get()] = fresh_data
+            data_by_date = fresh_data
+        
+        try:
+            null_value = special_keys[1+null_options.index(self.null_var_for_add_borrow.get())]
+        except ValueError:
+            msg.showerror(f"No Transaction Type", "Transaction Type is a required field!")
+            return
+
+        data_list_by_date = list(data_by_date[special_keys[0]][null_value].items())
+        existing_persons = []
+        for key, _ in data_list_by_date:
+            existing_persons.append(key)
+        
+        new_person = self.person_var_for_add_borrow.get()
+        if new_person==select_text:
+            msg.showerror(f"No Person Selected", "Person for borrow transaction can't be empty!")
+            return
+        
+        if new_person in existing_persons:
+            msg.showerror(f"Duplicate Person ({new_person})", "This person already exists on this day's selected transaction type!")
+            return
+
+        if (self.add_borrow_variables):
+            title_list = []
+            title_dict = {}
+            for variables in self.add_borrow_variables:
+                if variables:
+                    title, amount = variables
+                    title_value = title.get().replace('#', '').strip()
+                    if title_value=='' or not amount.get():
+                        msg.showerror(f"Empty Fields", "Fill out all fields else delete the fields!")
+                        return
+                    title_dict[title_value] = amount.get()
+                    title_list.append(title_value)
+            if len(title_list)!=len(set(title_list)):
+                msg.showerror(f"Duplicate Titles", "Remove same titles from multiple fields")
+                return
+            data_to_be_written["transaction"][date_selected.get()][special_keys[0]][null_value][new_person] = title_dict
+        else:
+           self.borrow_popup.destroy()
+
+        self.write_data(data_to_be_written)
+        self.borrow_popup.destroy()
+        self.show_transactions(date_selected.get())
+
     def add_general_transaction(self):
         self.add_transaction_variables = []
         self.add_transaction_elements = []
@@ -431,13 +681,13 @@ class AddTransWindow:
         if self.transaction_popup:
             self.transaction_popup.destroy()
         self.transaction_popup = tk.Toplevel(self.main_frame, bg=bg_for_left_frame)
-        self.transaction_popup.title("Add General Transaction")
+        self.transaction_popup.title(f"Add General Transaction - {date_selected.get()}")
         self.transaction_popup.geometry("500x300+500+200")
         self.transaction_popup.resizable(0, 0)
 
         # Scrollable Canvas Setup
         canvas = tk.Canvas(self.transaction_popup, bg=bg_for_left_frame)
-        scrollbar = tk.Scrollbar(self.transaction_popup, orient="vertical", command=canvas.yview)
+        scrollbar = tk.Scrollbar(self.transaction_popup, orient="vertical", command=canvas.yview, width=20)
         scrollbar.pack(side="right", fill="y")
         canvas.pack(side="left", fill="both", expand=True)
         canvas.configure(yscrollcommand=scrollbar.set)
@@ -474,7 +724,7 @@ class AddTransWindow:
         moneyEntry.pack_forget()
         entry_frame.pack(pady=5, fill='x')
         variables = [tk.StringVar(), tk.IntVar()]
-        variables[0].set("-Select-")
+        variables[0].set(select_text)
         combobox_values = list(self.data_read_from_file["unsettled"].keys())
         if len(self.add_transaction_variables):
             combobox_values.insert(0, "Me")
@@ -506,7 +756,7 @@ class AddTransWindow:
                 combobox_values = list(self.data_read_from_file["unsettled"].keys())
                 combobox.config(values=combobox_values)
                 if self.add_transaction_variables[i][0].get() == "Me":
-                    self.add_transaction_variables[i][0].set("-Select-")
+                    self.add_transaction_variables[i][0].set(select_text)
                 return
         self.add_transaction_elements = []
         self.add_transaction_variables = []
@@ -530,6 +780,10 @@ class AddTransWindow:
                 existing_titles.append(key)
         
         new_title = self.title_var_for_add_transaction.get().strip().replace('#','')
+        if new_title=='':
+            msg.showerror(f"No Title", "Title for transaction can't be empty!")
+            return
+        
         if new_title in existing_titles:
             msg.showerror(f"Duplicate Title ({new_title})", "This title already exists on this day's transaction")
             return
@@ -540,6 +794,9 @@ class AddTransWindow:
             for variables in self.add_transaction_variables:
                 if variables:
                     person, amount = variables
+                    if person.get()==select_text or not amount.get():
+                        msg.showerror(f"Empty Fields", "Fill out all fields else delete the fields!")
+                        return
                     person_dict[person.get()] = amount.get()
                     person_list.append(person.get())
             if len(person_list)!=len(set(person_list)):
@@ -979,5 +1236,5 @@ if __name__ == "__main__":
     obj = BroilerPlate()
     obj.show()
 
-#add options needs to be added now
-#sub-edit options needs to be added now
+#sub-edit options needs to be added now (will add later)
+#unsettled calculation needs tobe added now

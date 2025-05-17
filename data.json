@@ -91,6 +91,31 @@
             },
             "#Return": {},
             "#Total": 0
+        },
+        "15 May, 2025": {
+            "Coffee": 50,
+            "Cappucino": {
+                "Sahid": 50,
+                "Debojyoti": 100
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Ice cream": 40
+                    }
+                },
+                "#Not-Null": {
+                    "Arunaditya": {
+                        "Fanta": 20,
+                        "Lassi": 10
+                    }
+                }
+            },
+            "#Return": {
+                "Sahid": 30,
+                "Arunaditya": -50
+            },
+            "#Total": 210
         }
     }
 }
