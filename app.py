@@ -11,7 +11,7 @@ import copy
 
 colors = {'green':'#598C58', 'red':'#FF0B55'}
 bg_colors = ('#E5D9F2','#C4D9FF','#578FCA', '#FDFAF6', '#F1E7E7', '#9ACBD0')
-fg_colors = ('#27548A',)
+fg_colors = ('#27548A', "#547792")
 date_format = "%d %b, %Y"
 instruction_str = [("(Green -> He/She owes you money)", "(Green -> You have been paid)"), ("(Red -> You owe him/her money)", "(Red -> You have paid)")]
 date_selected = None
@@ -25,18 +25,11 @@ bg_for_main_frame = bg_colors[3]
 bg_for_entry = bg_colors[4]
 bg_for_heading = bg_colors[5]
 fg_for_sub_heading = fg_colors[0]
+fg_for_unsettled_heading = fg_colors[1]
 
 select_text = "-Select-"
 null_options = ["Someone paid for you", "Someone lend/borrowed money"]
 special_keys = ("#Borrow", "#Null", "#Not-Null", "#Return", "#Total")
-fresh_data = {
-                special_keys[0]: {
-                    special_keys[1]: {},
-                    special_keys[2]: {}
-                },
-                special_keys[3]: {},
-                special_keys[4]: 0
-            }
 
 PATH = os.path.dirname(__file__)
 delete_image = Image.open(PATH+"/delete.png").resize((25,25))
@@ -44,6 +37,34 @@ delete_image = Image.open(PATH+"/delete.png").resize((25,25))
 def read_data():
     with open(PATH+"/data.json") as f:
         return json.load(f)
+
+def write_data(data):
+    with open(PATH+"/data.json", 'w') as f:
+        return json.dump(data, f, indent=4)
+
+def calculate_unsettled():
+    data = read_data()
+    persons = list(data["unsettled"].keys())
+    unsettled_dict = {}
+    for person in persons:
+        unsettled_dict[person] = 0
+        
+    for transactions in list(data["transaction"].values()):
+        for key, value in list(transactions.items()):
+            if key==special_keys[0]:
+                for null_value, trans in list(value.items()):
+                    factor=1
+                    if null_value==special_keys[1]:factor=-1
+                    for person, amounts in list(trans.items()):
+                        amount = sum(amounts.values())
+                        unsettled_dict[person] += amount*factor
+            else:
+                if type(value)==dict:
+                    for person, amount in list(value.items()):
+                        if person!="Me":
+                            unsettled_dict[person] += amount
+
+    return unsettled_dict
 
 class BroilerPlate(tk.Tk):
     def __init__(self):
@@ -123,10 +144,86 @@ class UnsettledWindow:
         instructions[0].set(instruction_str[0][0])
         instructions[1].set(instruction_str[1][0])
         self.main_frame = main_frame
+        self.new_person = tk.StringVar()
         self.create_elememts()
+        self.show_elements()
+        self.show_unsettled()
     
     def create_elememts(self):
-        tk.Label(self.main_frame, text="Hello Unset").pack()
+        # Canvas For Scrollbar
+        self.canvas = tk.Canvas(self.main_frame, bg=bg_for_main_frame)
+        self.scrollbar = tk.Scrollbar(self.main_frame, orient="vertical", command=self.canvas.yview)
+        self.scrollbar.pack(side='right', fill='y')
+        self.canvas.pack(side='left', fill='both', expand=True)
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.main_scrollable_frame = tk.Frame(self.canvas, bg=bg_for_main_frame)
+        self.canvas_window = self.canvas.create_window((0, 0), window=self.main_scrollable_frame, anchor='nw')
+
+        self.main_scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+        self.canvas.bind('<Configure>', lambda e: self.canvas.itemconfig(self.canvas_window, width=e.width))
+        self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
+
+         # Main Elements
+        self.title = tk.Label(self.main_scrollable_frame, text="Unsettled Amounts", font=("Verdana", 18, "underline"), bg=bg_for_main_frame)
+        self.display_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
+        self.add_person_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
+        self.personEntry = tk.Entry(self.add_person_frame, textvariable=self.new_person, font=("Comicsans", 15), justify='center')
+        self.savePersonBtn = tk.Button(self.add_person_frame, text="Save", font=("Robota", 12), command=lambda:self.add_person(1))
+        self.addPersonBtn = tk.Button(self.main_scrollable_frame, text="Add Person", font=("Robota", 15), command=lambda:self.add_person(0))
+
+        self.slnoLabel= tk.Label(self.display_frame, text="SL NO.", font=("Robota",15, "bold", "underline"), bg=bg_for_main_frame, fg=fg_for_unsettled_heading)
+        self.personLabel = tk.Label(self.display_frame, text="PERSON", font=("Robota",15, "bold", "underline"), bg=bg_for_main_frame, fg=fg_for_unsettled_heading)
+        self.amountLabel = tk.Label(self.display_frame, text="AMOUNT UNSETTLED", font=("Robota",15, "bold", "underline"), bg=bg_for_main_frame, fg=fg_for_unsettled_heading)
+    
+    def show_elements(self):
+        self.title.pack()
+        self.display_frame.pack(pady=60, fill='x')
+        self.addPersonBtn.pack(pady=50)
+        self.display_frame.grid_columnconfigure(1, weight=1)
+        self.slnoLabel.grid(row=0, column=0, padx=(300,0), pady=5)
+        self.personLabel.grid(row=0, column=1, pady=5)
+        self.amountLabel.grid(row=0, column=2, padx=(0,300), pady=5)
+        self.personEntry.grid(row=0, column=0, padx=20, ipady=5)
+        self.savePersonBtn.grid(row=0, column=1, padx=20)
+    
+    def show_unsettled(self):
+        unsettled_dict = read_data()["unsettled"]
+        self.unsettled_elements = []
+        for person, amount in list(unsettled_dict.items()):
+            slno = len(self.unsettled_elements)+1
+
+            slnoValue = tk.Label(self.display_frame, text=f"{slno}.", font=("Robota", 15), bg=bg_for_main_frame)
+            personValue = tk.Label(self.display_frame, text=person, font=("Robota", 15), bg=bg_for_main_frame)
+            amountValue = tk.Label(self.display_frame, text=abs(amount), font=("Robota", 15, "bold"), bg=bg_for_main_frame)
+            if amount>0:
+                amountValue.config(fg=colors["green"])
+            elif amount<0:
+                amountValue.config(fg=colors["red"])
+            else:
+                amountValue.config(text='None', font=("Robota", 10))
+
+            slnoValue.grid(row=slno, column=0, padx=(300,0), pady=5)
+            personValue.grid(row=slno, column=1, pady=5)
+            amountValue.grid(row=slno, column=2, padx=(0,300), pady=5)
+            self.unsettled_elements.append([slnoValue, personValue, amountValue])
+    
+    def add_person(self, flag):
+        if flag==0:
+            self.addPersonBtn.pack_forget()
+            self.add_person_frame.pack(pady=50)
+        else:
+            data_to_be_written = read_data()
+            person = self.new_person.get().strip()
+            if person in data_to_be_written["unsettled"]:
+                msg.showerror(f"Duplicate Person ({person})", "This person already exists!")
+            else:
+                if person:
+                    data_to_be_written["unsettled"][person] = 0
+                    write_data(data_to_be_written)
+                    self.show_unsettled()
+                self.add_person_frame.pack_forget()
+                self.addPersonBtn.pack(pady=50)
 
 class AddTransWindow:
     def __init__(self, main_frame):
@@ -176,6 +273,7 @@ class AddTransWindow:
 
         self.dataLbl = tk.Label(self.input_frame, text="Your Transactions on this day", font=("Robota",15), bg=bg_for_main_frame)
         self.data_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
+        self.deleteAllBtn = tk.Button(self.main_scrollable_frame, text="Delete All", font=("Robota", 13, "bold"), cursor="hand2", command=self.delete_all_transaction, bg='red', fg='white', activebackground=colors['red'], activeforeground='white')
         self.show_transactions(date_selected.get())
     
     def show_elements(self):
@@ -196,6 +294,18 @@ class AddTransWindow:
 
         self.dataLbl.grid(row=2, column=0, padx=30)
         self.data_frame.pack(padx=30, ipadx=100, ipady=10)
+        self.deleteAllBtn.pack(ipadx=10, ipady=3, pady=10)
+    
+    def delete_all_transaction(self):
+        data_to_be_written = self.data_read_from_file
+        if date_selected.get() not in data_to_be_written["transaction"] or data_to_be_written["transaction"][date_selected.get()] == {special_keys[0]: {special_keys[1]: {},special_keys[2]: {}},special_keys[3]: {},special_keys[4]: 0}:
+            msg.showinfo("No Data", "Nothing to delete on this day!")
+        else:
+            if msg.askyesno("Delete Transactions", f"Are you sure you want to delete all transactions on {date_selected.get()}?"):
+                del data_to_be_written["transaction"][date_selected.get()]
+                self.write_data(data_to_be_written)
+                self.show_transactions(date_selected.get())
+                self.canvas.yview_moveto(0.0)
 
     def showDatePopup(self):
         if self.date_popup:
@@ -522,12 +632,12 @@ class AddTransWindow:
             elem.grid_forget()
     
     def save_return_add(self):
-        data_to_be_written = self.data_read_from_file
+        data_to_be_written = read_data()
         try:
             data_by_date = data_to_be_written["transaction"][date_selected.get()]
         except KeyError:
-            data_to_be_written["transaction"][date_selected.get()] = fresh_data
-            data_by_date = fresh_data
+            data_to_be_written["transaction"][date_selected.get()] = {special_keys[0]: {special_keys[1]: {},special_keys[2]: {}},special_keys[3]: {},special_keys[4]: 0}
+            data_by_date = {special_keys[0]: {special_keys[1]: {},special_keys[2]: {}},special_keys[3]: {},special_keys[4]: 0}
         
         data_list_by_date = list(data_by_date[special_keys[3]].items())
         existing_persons = []
@@ -641,12 +751,12 @@ class AddTransWindow:
         self.add_borrow_variables = []
 
     def save_borrow_add(self):
-        data_to_be_written = self.data_read_from_file
+        data_to_be_written = read_data()
         try:
             data_by_date = data_to_be_written["transaction"][date_selected.get()]
         except KeyError:
-            data_to_be_written["transaction"][date_selected.get()] = fresh_data
-            data_by_date = fresh_data
+            data_to_be_written["transaction"][date_selected.get()] = {special_keys[0]: {special_keys[1]: {},special_keys[2]: {}},special_keys[3]: {},special_keys[4]: 0}
+            data_by_date = {special_keys[0]: {special_keys[1]: {},special_keys[2]: {}},special_keys[3]: {},special_keys[4]: 0}
         
         try:
             null_value = special_keys[1+null_options.index(self.null_var_for_add_borrow.get())]
@@ -783,12 +893,12 @@ class AddTransWindow:
         add_btn_frame.pack(pady=15)
 
     def save_transaction_add(self):
-        data_to_be_written = self.data_read_from_file
+        data_to_be_written = read_data()
         try:
             data_by_date = data_to_be_written["transaction"][date_selected.get()]
         except KeyError:
-            data_to_be_written["transaction"][date_selected.get()] = fresh_data
-            data_by_date = fresh_data
+            data_to_be_written["transaction"][date_selected.get()] = {special_keys[0]: {special_keys[1]: {},special_keys[2]: {}},special_keys[3]: {},special_keys[4]: 0}
+            data_by_date = {special_keys[0]: {special_keys[1]: {},special_keys[2]: {}},special_keys[3]: {},special_keys[4]: 0}
         
         data_list_by_date = list(data_by_date.items())
         existing_titles = []
@@ -821,7 +931,7 @@ class AddTransWindow:
                 return
             data_to_be_written["transaction"][date_selected.get()][new_title] = person_dict
         else:
-           data_to_be_written["transaction"][date_selected.get()][new_title] = self.amount_var_for_add_transaction.get() 
+            data_to_be_written["transaction"][date_selected.get()][new_title] = self.amount_var_for_add_transaction.get() 
         
         for key, _ in data_list_by_date:
             if key.startswith('#'):
@@ -1222,31 +1332,32 @@ class AddTransWindow:
         for i in range(len(self.return_inputs)):
             self.cancel_delete_return(i, called_from_other_function=True)
 
-    def calculate_total(self):
-        data = self.data_read_from_file["transaction"]
-        data_to_be_totaled = data[date_selected.get()]
-        total = 0
-
-        for x in data_to_be_totaled:
-            transaction = data_to_be_totaled[x]
-            if x==special_keys[0]:
-                transaction_not_null = transaction[special_keys[2]]
-                for value in transaction_not_null.values():
-                    total+=sum(value.values())
-            elif x==special_keys[3]:
-                total+=sum(transaction.values())
-            elif x==special_keys[4]:
-                self.data_read_from_file["transaction"][date_selected.get()][x] = total
-            else:
-                if type(transaction)==int:
-                    total+=transaction
-                else:
+    def calculate_total(self, data):
+        if date_selected.get() in list(data["transaction"].keys()):
+            total = 0
+            data_to_be_totaled = data["transaction"][date_selected.get()]
+            for x in data_to_be_totaled:
+                transaction = data_to_be_totaled[x]
+                if x==special_keys[0]:
+                    transaction_not_null = transaction[special_keys[2]]
+                    for value in transaction_not_null.values():
+                        total+=sum(value.values())
+                elif x==special_keys[3]:
                     total+=sum(transaction.values())
+                elif x==special_keys[4]:
+                    data["transaction"][date_selected.get()][x] = total
+                else:
+                    if type(transaction)==int:
+                        total+=transaction
+                    else:
+                        total+=sum(transaction.values())
+        return data
 
     def write_data(self, data):
-        self.calculate_total()
-        with open(PATH+"/data.json", 'w') as f:
-            return json.dump(data, f, indent=4)
+        data = self.calculate_total(data)
+        write_data(data)
+        data["unsettled"] = calculate_unsettled()
+        write_data(data)
 
 
 if __name__ == "__main__":
@@ -1254,4 +1365,3 @@ if __name__ == "__main__":
     obj.show()
 
 #sub-edit options needs to be added now (will add later)
-#unsettled calculation needs to be added now

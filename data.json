@@ -1,43 +1,2161 @@
 {
     "unsettled": {
-        "Debojyoti": -30,
-        "Sahid": 20,
-        "Arunaditya": -5
+        "Debojyoti": -221,
+        "Sahid": 0,
+        "Arunaditya": 0,
+        "Rumava": 0,
+        "Arpan Da": 0,
+        "Arun Da": 0,
+        "Amiul": 15,
+        "Shreyak": 50,
+        "Souptik": -7,
+        "Gaurav": 0,
+        "Abhijit": 0,
+        "Swarup": 0,
+        "Farad Da": 0,
+        "Anupam": -5,
+        "Kallal": 0,
+        "Arin": 0
     },
     "transaction": {
-        "06 May, 2025": {
-            "Groww": 200,
-            "Temple": 51,
-            "Chicken Pakora": {
-                "Me": 15,
-                "Debojyoti": 15
+        "06 Nov, 2024": {
+            "Auto Fare": {
+                "Debojyoti": 10,
+                "Me": 10
             },
-            "#Return": {},
             "#Borrow": {
                 "#Null": {},
                 "#Not-Null": {}
             },
+            "#Return": {
+                "Debojyoti": -10
+            },
+            "#Total": 10
+        },
+        "07 Nov, 2024": {
+            "Mug": 20,
+            "Jug": 30,
+            "Bucket": 60,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 110
+        },
+        "09 Nov, 2024": {
+            "Egg Tadka": 55,
+            "Rumali Roti": 25,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 80
+        },
+        "10 Nov, 2024": {
+            "PG Due": 1500,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 1500
+        },
+        "12 Nov, 2024": {
+            "Donation": 50,
+            "Puri (lunch)": 25,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 75
+        },
+        "13 Nov, 2024": {
+            "Puri (lunch)": 25,
+            "Wifi": 99,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 124
+        },
+        "14 Nov, 2024": {
+            "Puri (lunch)": 25,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 25
+        },
+        "15 Nov, 2024": {
+            "Train": 10,
+            "Tee Scale": 130,
+            "Tee Scale Cover": 15,
+            "Diagonal Scale": 15,
+            "Set Square": 65,
+            "Compass": 41,
+            "Sharpener": 5,
+            "Eraser": 3,
+            "Cellotape": 5,
+            "Pentonic Pens (10)": 90,
+            "HB Pencils (2)": 14,
+            "A4 sheets": 42,
+            "Coffee": 36,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 471
+        },
+        "16 Nov, 2024": {
+            "Roti": 20,
+            "Egg Tadka": 25,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 45
+        },
+        "17 Nov, 2024": {
+            "Bourbon Biscuits (4)": 40,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {
+                    "Arpan Da": {
+                        "Cash to Online": 500
+                    }
+                }
+            },
+            "#Return": {
+                "Arpan Da": -500
+            },
+            "#Total": 40
+        },
+        "18 Nov, 2024": {
+            "Puri Sabji (lunch)": 25,
+            "Report File (for pratical)": 48,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 73
+        },
+        "19 Nov, 2024": {
+            "Auto Fare": 10,
+            "Paratha": {
+                "Debojyoti": 25,
+                "Me": 25
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -25
+            },
+            "#Total": 35
+        },
+        "20 Nov, 2024": {
+            "Chowmein": 25,
+            "Laddu": 5,
+            "Tiffin Box": 60,
+            "Cloth Wash": 50,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 140
+        },
+        "21 Nov, 2024": {
+            "Ruti-Ghugni": {
+                "Debojyoti": 12,
+                "Me": 18
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Bus": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 30
+        },
+        "22 Nov, 2024": {
+            "Roti-Daal": {
+                "Debojyoti": 12,
+                "Me": 18
+            },
+            "Auto Fare": 10,
+            "Printout (for report)": 2,
+            "Tea": {
+                "Debojyoti": 3
+            },
+            "Cake": {
+                "Debojyoti": 7
+            },
+            "Limca": {
+                "Debojyoti": 15,
+                "Me": 15
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -39
+            },
+            "#Total": 43
+        },
+        "23 Nov, 2024": {
+            "Auto Fare": 25,
+            "Bus Fare": 35,
+            "Biriyani": {
+                "Debojyoti": 70,
+                "Sahid": 90,
+                "Me": 90
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 310
+        },
+        "24 Nov, 2024": {
+            "Soan Papdi": 10,
+            "Cash to online": {
+                "Arun Da": 100
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Sahid": -90,
+                "Debojyoti": -60,
+                "Arun Da": -100
+            },
+            "#Total": -140
+        },
+        "25 Nov, 2024": {
+            "Paratha-Chola (Lunch)": {
+                "Debojyoti": 28,
+                "Me": 27
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 55
+        },
+        "26 Nov, 2024": {
+            "Auto Fare": 10,
+            "Fried Rice and Aloo Dum": {
+                "Debojyoti": 40,
+                "Me": 40
+            },
+            "Train tickets": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 100
+        },
+        "27 Nov, 2024": {
+            "Tiffin (Lunch)": {
+                "Debojyoti": 18,
+                "Me": 18
+            },
+            "Chicken Pakora": 15,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -86
+            },
+            "#Total": -35
+        },
+        "28 Nov, 2024": {
+            "Tiffin (Lunch)": 18,
+            "Eggroll": {
+                "Sahid": 35
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 53
+        },
+        "29 Nov, 2024": {
+            "Egg Meal (Lunch)": 40,
+            "Bauli": {
+                "Debojyoti": 20
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 60
+        },
+        "30 Nov, 2024": {
+            "Roti": 16,
+            "Chana": 30,
+            "Dista Copy": {
+                "Debojyoti": 12
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Train Tickets": 10,
+                        "Phuchka": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -20
+            },
+            "#Total": 38
+        },
+        "01 Dec, 2024": {
+            "Scanner Pages": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 20
+        },
+        "02 Dec, 2024": {
+            "Lab Manual Print": 8,
+            "Guava and Banana": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": 8
+            },
+            "#Total": 36
+        },
+        "03 Dec, 2024": {
+            "Marksheet Xerox": 5,
+            "Roti-sabji (Lunch)": 18,
+            "Pants": {
+                "Debojyoti": 150
+            },
+            "Eggroll": {
+                "Sahid": 35
+            },
+            "Assignment of Arpan Da": -165,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Sahid": -70,
+                "Debojyoti": -150
+            },
+            "#Total": -177
+        },
+        "04 Dec, 2024": {
+            "Roti-sabji (lunch)": 18,
+            "Egg": {
+                "Debojyoti": 10
+            },
+            "Food": {
+                "Amiul": 30,
+                "Debojyoti": 20
+            },
+            "Jhalmuri": {
+                "Debojyoti": 10
+            },
+            "Water drum PG": 100,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Amiul": -30,
+                "Debojyoti": -20
+            },
+            "#Total": 138
+        },
+        "05 Dec, 2024": {
+            "Practical Pages": 10,
+            "Fried Rice and Chicken": 50,
+            "Printout": {
+                "Debojyoti": 10
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 70
+        },
+        "06 Dec, 2024": {
+            "Roti-sabji": 18,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 18
+        },
+        "07 Dec, 2024": {
+            "Roti": 20,
+            "Tadka": 25,
+            "Soan Papdi": 5,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 50
+        },
+        "09 Dec, 2024": {
+            "Guava": 36,
+            "Banana": 10,
+            "Chicken Sandwich": 40,
+            "Jaljeera": 5,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 91
+        },
+        "10 Dec, 2024": {
+            "Roti-sabji": 18,
+            "Auto fare": 10,
+            "Phuchka": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 48
+        },
+        "11 Dec, 2024": {
+            "Roti-sabji": 18,
+            "Biscuits and cake": {
+                "Debojyoti": 20
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Auto fare": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 38
+        },
+        "12 Dec, 2024": {
+            "Puri-sabji": 25,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 25
+        },
+        "13 Dec, 2024": {
+            "Roti-sabji": 18,
+            "Cloth Wash": 50,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 68
+        },
+        "14 Dec, 2024": {
+            "Biriyani": 77,
+            "Thumbs Up": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 97
+        },
+        "16 Dec, 2024": {
+            "Practical Copy": {
+                "Debojyoti": 65,
+                "Me": 65
+            },
+            "Fried Rice and Chicken": 50,
+            "Face cream": 68,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Auto Fare": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 248
+        },
+        "17 Dec, 2024": {
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -85
+            },
+            "#Total": -85
+        },
+        "18 Dec, 2024": {
+            "Phuchka": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 20
+        },
+        "19 Dec, 2024": {
+            "Roti-sabji": 18,
+            "Calculator (cancelled)": 1397,
+            "Flipkart Cashback": -13,
+            "Bag Repair": 70,
+            "Chop": 8,
+            "Calculator (refund)": -1397,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 83
+        },
+        "20 Dec, 2024": {
+            "Coffee": {
+                "Debojyoti": 15
+            },
+            "Paratha-Ghugni": {
+                "Debojyoti": 40,
+                "Shreyak": 70
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 125
+        },
+        "21 Dec, 2024": {
+            "Recharge": {
+                "Sahid": 249
+            },
+            "Cash to Online": {
+                "Arpan Da": 50
+            },
+            "Biscuits": {
+                "Debojyoti": 10,
+                "Me": 10,
+                "Rumava": 10,
+                "Amiul": 10,
+                "Souptik": 10,
+                "Gaurav": 10,
+                "Abhijit": 10,
+                "Farad Da": 10,
+                "Swarup": 10
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Sahid": {
+                        "Recharge (extra money)": -1
+                    },
+                    "Rumava": {
+                        "Metro Tickets": 20
+                    },
+                    "Amiul": {
+                        "Ice-cream": 45
+                    },
+                    "Souptik": {
+                        "Metro Tickets": 20
+                    },
+                    "Debojyoti": {
+                        "Fried Rice, Butter Chicken and Matar Paneer": 165
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Sahid": -250,
+                "Arpan Da": -50,
+                "Rumava": 10,
+                "Amiul": 35,
+                "Debojyoti": 70,
+                "Farad Da": -10,
+                "Souptik": 10,
+                "Abhijit": -10
+            },
+            "#Total": 194
+        },
+        "22 Dec, 2024": {
+            "Recharge": {
+                "Sahid": 19
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Rumava": {
+                        "Moghlai": 35
+                    },
+                    "Sahid": {
+                        "Recharge (Extra Money)": -1
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Sahid": -20
+            },
+            "#Total": -1
+        },
+        "23 Dec, 2024": {
+            "Coffee": {
+                "Debojyoti": 15
+            },
+            "Biscuits": {
+                "Debojyoti": 30,
+                "Me": 20
+            },
+            "Train Ticket": 5,
+            "Toilet at Waiting Room": 5,
+            "Roti-chana": 90,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Dosa": 35
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Rumava": 35,
+                "Swarup": -10
+            },
+            "#Total": 190
+        },
+        "24 Dec, 2024": {
+            "Biscuits": 10,
+            "Cake": 40,
+            "Jhalmuri": 20,
+            "Bakshish (Train)": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 90
+        },
+        "25 Dec, 2024": {
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 0
+        },
+        "05 Jan, 2025": {
+            "Water": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 20
+        },
+        "06 Jan, 2025": {
+            "Toto fare": 30,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 30
+        },
+        "07 Jan, 2025": {
+            "Toothpaste": 20,
+            "Kurkure": 10,
+            "Roti-sabji": 24,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 54
+        },
+        "08 Jan, 2025": {
+            "Roti-sabji": 18,
+            "Eggroll": 30,
+            "Wifi": 117,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 165
+        },
+        "09 Jan, 2025": {
+            "Roti-sabji": 12,
+            "Soan Papdi": 5,
+            "Kurkure": {
+                "Debojyoti": 10
+            },
+            "Sugar Free Biscuits": 43,
+            "Dista Copy (2)": 30,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 100
+        },
+        "10 Jan, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Roti-chola": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 0
+        },
+        "11 Jan, 2025": {
+            "Roti": 32,
+            "Aloo Dum": 25,
+            "Soan Papdi": 5,
+            "Cash to online": {
+                "Debojyoti": 100
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -90
+            },
+            "#Total": 72
+        },
+        "12 Jan, 2025": {
+            "Auto Fare": 10,
+            "Chola": 20,
+            "Hankey": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 50
+        },
+        "13 Jan, 2025": {
+            "Roti-chola": 20,
+            "Dal Pakora": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 30
+        },
+        "14 Jan, 2025": {
+            "Mouse": {
+                "Debojyoti": 279
+            },
+            "Chowmein": 40,
+            "Flipkart Cashback": -6,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -279
+            },
+            "#Total": 34
+        },
+        "15 Jan, 2025": {
+            "Paratha-ghugni": 25,
+            "Online to Cash": {
+                "Arpan Da": 300
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arpan Da": -300
+            },
+            "#Total": 25
+        },
+        "16 Jan, 2025": {
+            "Shuttle Cock": 20,
+            "Paratha": 20,
+            "Suji": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 50
+        },
+        "17 Jan, 2025": {
+            "Biscuits": 10,
+            "Samosa": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 20
+        },
+        "18 Jan, 2025": {
+            "Phuchka": 10,
+            "Roti": 20,
+            "Tadka": 25,
+            "Goja": 5,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 60
+        },
+        "19 Jan, 2025": {
+            "Haircut": 50,
+            "Buns": 16,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 66
+        },
+        "20 Jan, 2025": {
+            "Roti-ghugni": 20,
+            "Biscuits": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 40
+        },
+        "21 Jan, 2025": {
+            "Workshop Pages": {
+                "Abhijit": -20
+            },
+            "Biscuits": {
+                "Debojyoti": 20
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Workshop Pages": 20,
+                        "Roti-sabji": 32
+                    },
+                    "Abhijit": {
+                        "Pages Delivered": -20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": 52
+            },
+            "#Total": 52
+        },
+        "24 Jan, 2025": {
+            "Auto Fare": {
+                "Debojyoti": 10,
+                "Me": 30
+            },
+            "Moori": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 50
+        },
+        "25 Jan, 2025": {
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -30
+            },
+            "#Total": -30
+        },
+        "26 Jan, 2025": {
+            "Medicines": 75,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 75
+        },
+        "27 Jan, 2025": {
+            "Rickshaw": {
+                "Debojyoti": 23,
+                "Me": 22
+            },
+            "Printout": 2,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Roti-chola": 20,
+                        "Biscuits": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 47
+        },
+        "29 Jan, 2025": {
+            "Lunch": {
+                "Debojyoti": 60,
+                "Me": 30
+            },
+            "Medicines": 95,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -53
+            },
+            "#Total": 132
+        },
+        "30 Jan, 2025": {
+            "Roti-chola": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 20
+        },
+        "31 Jan, 2025": {
+            "Lunch": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 20
+        },
+        "01 Feb, 2025": {
+            "Roti, Aloo Dum and Soan Papdi": 27,
+            "Roti and tarka": 41,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {
+                    "Debojyoti": {
+                        "No cash": 200
+                    }
+                }
+            },
+            "#Return": {},
+            "#Total": 268
+        },
+        "02 Feb, 2025": {
+            "Lassi": {
+                "Debojyoti": 40,
+                "Arunaditya": 40,
+                "Me": 40
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Anupam": {
+                        "Dakshina": 5
+                    },
+                    "Debojyoti": {
+                        "Khichdi and Aloo Dum": 50,
+                        "Auto Fare": 10,
+                        "Bus Fare": 12
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 120
+        },
+        "03 Feb, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Phuchka": 10,
+                        "Biscuits": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -148
+            },
+            "#Total": -148
+        },
+        "04 Feb, 2025": {
+            "Fried Rice and Chicken": 50,
+            "Water": 150,
+            "Cloth Wash": 50,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 250
+        },
+        "05 Feb, 2025": {
+            "Kachori": 30,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 30
+        },
+        "06 Feb, 2025": {
+            "Little Hearts": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 10
+        },
+        "07 Feb, 2025": {
+            "Rickshaw": 15,
+            "Auto": 10,
+            "Eggroll": 30,
+            "Xerox": 15,
+            "Medicines (cold)": 93,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 163
+        },
+        "08 Feb, 2025": {
+            "Wifi": {
+                "Arun Da": 117,
+                "Me": 117
+            },
+            "Biriyani": 100,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arun Da": -100
+            },
+            "#Total": 234
+        },
+        "09 Feb, 2025": {
+            "Envelope": 10,
+            "Buns": 10,
+            "Train Tickets": {
+                "Debojyoti": 10,
+                "Me": 10
+            },
+            "Lassi (treat for Debojyoti)": 30,
+            "Sweets": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 90
+        },
+        "10 Feb, 2025": {
+            "Cakes": 20,
+            "Puri-sabji": 25,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 45
+        },
+        "11 Feb, 2025": {
+            "Auto Fare": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 10
+        },
+        "12 Feb, 2025": {
+            "Semester exam fees": 44,
+            "Ticket to Asansol": 150,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 194
+        },
+        "13 Feb, 2025": {
+            "Train Ticket": 5,
+            "Biscuits": 30,
+            "Cakes": 40,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 75
+        },
+        "15 Feb, 2025": {
+            "Change": 4,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 4
+        },
+        "18 Feb, 2025": {
+            "Bhalo Mani": -100,
+            "Jhalmuri": 20,
+            "Metro Ticket": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": -60
+        },
+        "19 Feb, 2025": {
+            "Metro Tickets (2)": 40,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 40
+        },
+        "20 Feb, 2025": {
+            "Luxor FineLiners (2)": 300,
+            "Patanjali Cough Syrup": 85,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 385
+        },
+        "22 Feb, 2025": {
+            "Roti-sabji": 40,
+            "Soan Papdi": 5,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 45
+        },
+        "24 Feb, 2025": {
+            "Puri-sabji (lunch)": 25,
+            "Auto fare": 14,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 39
+        },
+        "26 Feb, 2025": {
+            "Mobile Recharge": 249,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 249
+        },
+        "28 Feb, 2025": {
+            "Roti-tarka": {
+                "Debojyoti": 21,
+                "Me": 52
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 73
+        },
+        "01 Mar, 2025": {
+            "Exam Board": {
+                "Rumava": 130,
+                "Me": 130,
+                "Debojyoti": 130
+            },
+            "Biscuits": {
+                "Debojyoti": 10,
+                "Me": 10
+            },
+            "Copies": 165,
+            "Copies (Payment failed)": -165,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Tea": 6,
+                        "Veg Rice and Chilli Chicken": 90
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 410
+        },
+        "02 Mar, 2025": {
+            "Auto Fare": 26,
+            "Bus Fare": 10,
+            "Eggroll": {
+                "Debojyoti": 40,
+                "Me": 40,
+                "Sahid": 40,
+                "Amiul": 40
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Rumava": -130
+            },
+            "#Total": 66
+        },
+        "03 Mar, 2025": {
+            "Lassi": {
+                "Debojyoti": 40,
+                "Me": 40
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Banana": 7,
+                        "Auto Fare": 20,
+                        "Copies": 83,
+                        "Eggroll": 40
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": 20
+            },
+            "#Total": 100
+        },
+        "04 Mar, 2025": {
+            "Biscuits": 64,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Amiul": -40,
+                "Sahid": -40
+            },
+            "#Total": -16
+        },
+        "05 Mar, 2025": {
+            "Printout": 4,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 4
+        },
+        "06 Mar, 2025": {
+            "Coffee": {
+                "Debojyoti": 10,
+                "Sahid": 10,
+                "Me": 10
+            },
+            "Buns": 11,
+            "Printout": 4,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 45
+        },
+        "07 Mar, 2025": {
+            "Milkshake": {
+                "Debojyoti": 35
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 35
+        },
+        "08 Mar, 2025": {
+            "Phuchka": 10,
+            "Ice-cream Biscuit": 10,
+            "Biriyani": 90,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 110
+        },
+        "10 Mar, 2025": {
+            "Phali": {
+                "Debojyoti": 40,
+                "Me": 40
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -55
+            },
+            "#Total": 25
+        },
+        "11 Mar, 2025": {
+            "Wifi": {
+                "Arun Da": 33,
+                "Me": 117
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Souptik": {
+                        "Eggroll": 35
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 150
+        },
+        "12 Mar, 2025": {
+            "Fried Rice": {
+                "Debojyoti": 50,
+                "Amiul": 30,
+                "Me": 50
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Ice-cream": 28
+                    },
+                    "Amiul": {
+                        "Ice-cream": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Souptik": 35
+            },
+            "#Total": 165
+        },
+        "13 Mar, 2025": {
+            "Apples": 160,
+            "Bananas": 50,
+            "Gulal": 60,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 270
+        },
+        "14 Mar, 2025": {
+            "Cloth Wash": 50,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -62
+            },
+            "#Total": -12
+        },
+        "15 Mar, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Amiul": {
+                        "Maggi": 32
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 0
+        },
+        "16 Mar, 2025": {
+            "Eggroll": 35,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Amiul": 12
+            },
+            "#Total": 47
+        },
+        "18 Mar, 2025": {
+            "Vicks Vaporub": 25,
+            "Puri-sabji": 25,
+            "Ice-cream": {
+                "Debojyoti": 10,
+                "Amiul": 25,
+                "Gaurav": 10,
+                "Souptik": 10,
+                "Kallal": 10
+            },
+            "Misti Doi": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -10,
+                "Amiul": -10
+            },
+            "#Total": 115
+        },
+        "19 Mar, 2025": {
+            "Printout": {
+                "Arunaditya": 30
+            },
+            "Eggroll": 35,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Gaurav": -10
+            },
+            "#Total": 55
+        },
+        "20 Mar, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Biriyani": 45,
+                        "Sugarcane Juice": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 0
+        },
+        "21 Mar, 2025": {
+            "Chaat": {
+                "Debojyoti": 50,
+                "Me": 50
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Shreyak": {
+                        "Paratha": 20,
+                        "Suji": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Kallal": -10
+            },
+            "#Total": 90
+        },
+        "22 Mar, 2025": {
+            "Roti": 16,
+            "Chana": 25,
+            "Soan Papdi": 5,
+            "Fish Fry": 30,
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Paratha-sabji": 24,
+                        "Ice-cream": 16,
+                        "Mango Milkshake": 90
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": 10
+            },
+            "#Total": 86
+        },
+        "23 Mar, 2025": {
+            "Phali": 40,
+            "Snacks": {
+                "Amiul": 15
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": 90,
+                "Amiul": -15
+            },
+            "#Total": 130
+        },
+        "24 Mar, 2025": {
+            "Paratha and Suji": 30,
+            "Bus Fare": {
+                "Debojyoti": 20,
+                "Me": 20
+            },
+            "Apples": 100,
+            "Grapes": 30,
+            "Guavas": 50,
+            "Misti Doi": {
+                "Debojyoti": 56
+            },
+            "Sweets": 20,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Train Ticket": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 326
+        },
+        "25 Mar, 2025": {
+            "Toothbrush": 20,
+            "Handwash": 25,
+            "Eggroll": 35,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -66
+            },
+            "#Total": 14
+        },
+        "26 Mar, 2025": {
+            "Chicken Roll": 40,
+            "Auto Fare": 10,
+            "Mobile Recharge": 249,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 299
+        },
+        "28 Mar, 2025": {
+            "Auto Fare": {
+                "Arunaditya": 17,
+                "Me": 27
+            },
+            "Roti-ghugni": 26,
+            "Lassi": 30,
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Bus Fare": 15
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": -2
+            },
+            "#Total": 98
+        },
+        "29 Mar, 2025": {
+            "Buns": 11,
+            "Chicken Chowmein": 90,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 101
+        },
+        "30 Mar, 2025": {
+            "Train Ticket": 5,
+            "Rickshaw Fare": 30,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 35
+        },
+        "01 Apr, 2025": {
+            "Papai Mama": -50,
+            "Rickshaw Fare": 50,
+            "Train Ticket": 5,
+            "Bandhan Bank Interest": -29,
+            "Chowmein": 40,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 16
+        },
+        "02 Apr, 2025": {
+            "Paratha-ghugni (lunch)": 40,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Souptik": -10
+            },
+            "#Total": 30
+        },
+        "03 Apr, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Roti-chola": 20,
+                        "Chicken Nuggets": 25
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 0
+        },
+        "05 Apr, 2025": {
+            "Buns": 10,
+            "Oreo": 10,
+            "Alu Biriyani": 65,
+            "Chicken Chap": 30,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": 45
+            },
+            "#Total": 160
+        },
+        "06 Apr, 2025": {
+            "Oreo": 10,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 10
+        },
+        "07 Apr, 2025": {
+            "Gift for Gublu (UNO)": 203,
+            "Auto Fare": 10,
+            "Chicken Roll": {
+                "Debojyoti": 40,
+                "Me": 40
+            },
+            "Butter": 7,
+            "#Borrow": {
+                "#Null": {
+                    "Shreyak": {
+                        "Biscuits": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -50,
+                "Shreyak": 30
+            },
+            "#Total": 280
+        },
+        "08 Apr, 2025": {
+            "Paratha": 20,
+            "Suji": 10,
+            "Train Ticket": 425,
+            "#Borrow": {
+                "#Null": {
+                    "Sahid": {
+                        "Bus Fare": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 455
+        },
+        "09 Apr, 2025": {
+            "Eggroll": 40,
+            "Copies (6)": 165,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 205
+        },
+        "10 Apr, 2025": {
+            "Paratha": 20,
+            "Gulab Jamun": 12,
+            "Uber": {
+                "Gaurav": 25,
+                "Rumava": 25,
+                "Souptik": 25,
+                "Me": 25
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arun Da": -50
+            },
+            "#Total": 82
+        },
+        "11 Apr, 2025": {
+            "Cloth Wash": 26,
+            "#Borrow": {
+                "#Null": {
+                    "Gaurav": {
+                        "Eggroll": 35
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Rumava": -25,
+                "Souptik": -25
+            },
+            "#Total": -24
+        },
+        "12 Apr, 2025": {
+            "Train Ticket": 5,
+            "Biscuits": 20,
+            "Cake": 40,
+            "Little Hearts": 10,
+            "Egg Fried Rice": 160,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 235
+        },
+        "13 Apr, 2025": {
+            "Amma": -200,
+            "Gublu (from Amma)": -200,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": -400
+        },
+        "14 Apr, 2025": {
+            "Baba": -20,
+            "Shuttle Cock": 70,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 50
+        },
+        "16 Apr, 2025": {
+            "Auto Fare": 40,
+            "Train Ticket": 432,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 472
+        },
+        "17 Apr, 2025": {
+            "Coconut": 60,
+            "Chaatu": 100,
+            "Some other stuff": 100,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 260
+        },
+        "19 Apr, 2025": {
+            "Pocket Money": -4000,
+            "Train Ticket": 340,
+            "Train Ticket (refund)": -360,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": -4020
+        },
+        "20 Apr, 2025": {
+            "Donation (in train)": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 20
+        },
+        "21 Apr, 2025": {
+            "Waiting Room": 12,
+            "Bus Fare": 10,
+            "Roti-sabji": 20,
+            "Puri-sabji": {
+                "Debojyoti": 25
+            },
+            "Choco Pie": {
+                "Debojyoti": 10,
+                "Me": 10
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 87
+        },
+        "22 Apr, 2025": {
+            "Roti-sabji": 18,
+            "Lassi": 20,
+            "Oreo": 20,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 58
+        },
+        "23 Apr, 2025": {
+            "Roti-sabji": {
+                "Debojyoti": 20,
+                "Me": 20
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Auto Fare": 10
+                    },
+                    "Amiul": {
+                        "Lassi": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 40
+        },
+        "24 Apr, 2025": {
+            "Bread-butter": 20,
+            "Milkshake": {
+                "Debojyoti": 40
+            },
+            "Cold Drinks": {
+                "Shreyak": 20
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Eggroll": 35
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Amiul": 20,
+                "Shreyak": -20
+            },
+            "#Total": 80
+        },
+        "25 Apr, 2025": {
+            "Mobile Recharge": 249,
+            "Luchi-sabji": 18,
+            "Auto fare": {
+                "Sahid": 10,
+                "Me": 20
+            },
+            "Printout": {
+                "Debojyoti": 12
+            },
+            "Winzo": -19,
+            "Roti": {
+                "Debojyoti": 20
+            },
+            "Choco Pie": 10,
+            "Football Pump": 5,
+            "#Borrow": {
+                "#Null": {
+                    "Sahid": {
+                        "Lab Copies": 135
+                    },
+                    "Arin": {
+                        "Printout": 12
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arin": 12
+            },
+            "#Total": 337
+        },
+        "26 Apr, 2025": {
+            "Buns": 11,
+            "Oreo": 10,
+            "Roti": {
+                "Arunaditya": 16,
+                "Sahid": 16,
+                "Me": 16
+            },
+            "Curd": {
+                "Arunaditya": 10
+            },
+            "Egg Tarka": {
+                "Sahid": 28,
+                "Me": 27
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": -26
+            },
+            "#Total": 108
+        },
+        "27 Apr, 2025": {
+            "Luchi-sabji": 18,
+            "Groww": 200,
+            "Spectacles": 1300,
+            "Money from home": -1300,
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Doi Phuchka": 15,
+                        "Lassi": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -82,
+                "Sahid": 81,
+                "Arunaditya": 35
+            },
+            "#Total": 252
+        },
+        "28 Apr, 2025": {
+            "Groww": 300,
+            "Auto Fare": 10,
+            "Veg Thali": 40,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 350
+        },
+        "29 Apr, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Maggi": 35,
+                        "Lassi": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": 45
+            },
+            "#Total": 45
+        },
+        "30 Apr, 2025": {
+            "Spectacles": 1200,
+            "Money from Home": -1200,
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Dosa": 50
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": 50
+            },
+            "#Total": 50
+        },
+        "01 May, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Souptik": {
+                        "Dosa": 50,
+                        "Tea": 12
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Souptik": 50
+            },
+            "#Total": 50
+        },
+        "02 May, 2025": {
+            "Groww": 100,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Fried Rice": 60
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 100
+        },
+        "03 May, 2025": {
+            "Groww": -100,
+            "Oreo": 20,
+            "Bourbon": {
+                "Debojyoti": 10
+            },
+            "Buns": 11,
+            "Biriyani": {
+                "Debojyoti": 70,
+                "Arunaditya": 90,
+                "Me": 90
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": 60,
+                "Arunaditya": -90
+            },
+            "#Total": 161
+        },
+        "04 May, 2025": {
+            "Toothpaste": 72,
+            "Good Night Refill": {
+                "Debojyoti": 38,
+                "Me": 37
+            },
+            "Luchi-sabji": 18,
+            "Recharge (for baba)": 249,
+            "Money (for Recharge)": -250,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Lassi": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Debojyoti": -80
+            },
+            "#Total": 84
+        },
+        "05 May, 2025": {
+            "Tuition Salary": -1800,
+            "Auto Fare": {
+                "Debojyoti": 20,
+                "Me": 20
+            },
+            "Workshop Pages": {
+                "Debojyoti": 30,
+                "Me": 30
+            },
+            "Dosa and Idli": {
+                "Debojyoti": 80,
+                "Me": 80
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Cloth Wash": 25,
+                        "Lassi": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": -1540
+        },
+        "06 May, 2025": {
+            "Groww": 200,
+            "Temple": 51,
+            "Chicken Pakora": {
+                "Debojyoti": 15,
+                "Me": 15
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
             "#Total": 281
         },
         "07 May, 2025": {
             "Coffee": {
-                "Me": 10,
-                "Debojyoti": 10
-            },
-            "Groww": -200,
-            "Idli": {
-                "Me": 30,
-                "Sahid": 30
+                "Debojyoti": 10,
+                "Me": 10
             },
             "Brown Bread": 19,
-            "Vada": 40,
+            "Groww": -200,
             "Auto Fare": {
-                "Me": -10,
-                "Debojyoti": 10
+                "Debojyoti": 10,
+                "Me": 10
             },
-            "#Return": {
-                "Sahid": -48,
-                "Arunaditya": -25
+            "Idli": {
+                "Sahid": 30,
+                "Me": 30
+            },
+            "Vada": {
+                "Debojyoti": 40
             },
             "#Borrow": {
                 "#Null": {
@@ -48,69 +2166,222 @@
                 },
                 "#Not-Null": {}
             },
-            "#Total": -134
+            "#Return": {
+                "Debojyoti": -148,
+                "Sahid": -20
+            },
+            "#Total": -209
         },
         "08 May, 2025": {
             "Farewell Food": 100,
-            "Ice-cream": 20,
-            "Bazooka": -120,
-            "Flowers": {
-                "Debojyoti": 25,
-                "Me": -60,
-                "Sahid": 30,
-                "Arunaditya": 10
-            },
-            "Flower": 10,
-            "#Return": {
-                "Sahid": 20
+            "Ice Cream": {
+                "Debojyoti": 101,
+                "Me": 101
             },
             "#Borrow": {
-                "#Null": {
-                    "Arunaditya": {
-                        "Cakes": 30
-                    }
-                },
+                "#Null": {},
                 "#Not-Null": {
-                    "Sahid": {
-                        "Lassi": 30,
-                        "Taxi": 10
+                    "Debojyoti": {
+                        "To pay Zepto": -200
                     }
                 }
             },
-            "#Total": 75
+            "#Return": {
+                "Sahid": 20
+            },
+            "#Total": 122
         },
-        "16 May, 2025": {
+        "09 May, 2025": {
+            "Groww": -169,
+            "Auto Fare": {
+                "Debojyoti": 20,
+                "Me": 20
+            },
+            "Lassi": {
+                "Debojyoti": 10,
+                "Arunaditya": 10,
+                "Me": 10
+            },
             "#Borrow": {
                 "#Null": {},
                 "#Not-Null": {}
             },
-            "#Return": {},
-            "#Total": 0
+            "#Return": {
+                "Debojyoti": 49
+            },
+            "#Total": -50
         },
-        "15 May, 2025": {
-            "Coffee": 50,
-            "Cappucino": {
-                "Sahid": 50,
-                "Debojyoti": 100
+        "10 May, 2025": {
+            "Roti": 16,
+            "Matar": 20,
+            "Soan Papdi": 5,
+            "Lassi": {
+                "Debojyoti": 10,
+                "Arunaditya": 10
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": -10
+            },
+            "#Total": 51
+        },
+        "11 May, 2025": {
+            "Luchi-sabji": 18,
+            "Treat to Rumava": 100,
+            "Water": {
+                "Souptik": 10,
+                "Me": 10,
+                "Gaurav": 10
+            },
+            "Frooti": {
+                "Debojyoti": 20
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Ice-cream": 10,
+                        "Sprite": 10
+                    },
+                    "Souptik": {
+                        "Eggroll": 35
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Gaurav": -10
+            },
+            "#Total": 158
+        },
+        "12 May, 2025": {
+            "Idli": {
+                "Arunaditya": 30,
+                "Me": 30
             },
             "#Borrow": {
                 "#Null": {
                     "Debojyoti": {
-                        "Ice cream": 40
+                        "Treat to Debojyoti": 50
+                    },
+                    "Arunaditya": {
+                        "Ice-cream": 25
                     }
                 },
                 "#Not-Null": {
-                    "Arunaditya": {
-                        "Fanta": 20,
-                        "Lassi": 10
+                    "Souptik": {
+                        "No Cash": 40
                     }
                 }
             },
-            "#Return": {
-                "Sahid": 30,
-                "Arunaditya": -50
+            "#Return": {},
+            "#Total": 100
+        },
+        "13 May, 2025": {
+            "Groww": -232,
+            "Milk": {
+                "Debojyoti": 5,
+                "Me": 25
             },
-            "#Total": 210
+            "Coffee": {
+                "Debojyoti": 5,
+                "Me": 5
+            },
+            "Bourbon": {
+                "Debojyoti": 10
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Souptik": {
+                        "Moori": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": 5
+            },
+            "#Total": -177
+        },
+        "14 May, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Rumava": {
+                        "Idli": 30
+                    },
+                    "Debojyoti": {
+                        "Bourbon": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Rumava": 30
+            },
+            "#Total": 30
+        },
+        "15 May, 2025": {
+            "Auto Fare": 20,
+            "Idli": {
+                "Arunaditya": 30,
+                "Me": 30
+            },
+            "Drawing Submit (Gublu)": 10,
+            "#Borrow": {
+                "#Null": {
+                    "Debojyoti": {
+                        "Ice-cream": 40
+                    },
+                    "Arunaditya": {
+                        "Chicken Lollipop": 20,
+                        "Fanta": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 90
+        },
+        "16 May, 2025": {
+            "Auto Fare": {
+                "Debojyoti": 10,
+                "Me": 10
+            },
+            "Bread": {
+                "Debojyoti": 9,
+                "Me": 9
+            },
+            "Lassi": {
+                "Sahid": 10,
+                "Debojyoti": 10
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Sahid": {
+                        "Auto Fare": 10
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 58
+        },
+        "17 May, 2025": {
+            "#Borrow": {
+                "#Null": {
+                    "Arunaditya": {
+                        "Idli": 30
+                    },
+                    "Debojyoti": {
+                        "Water": 210
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 0
         }
     }
 }
