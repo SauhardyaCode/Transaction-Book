@@ -30,9 +30,7 @@
                 "Sahid": 30
             },
             "Brown Bread": 19,
-            "Vada": {
-                "Debojyoti": 40
-            },
+            "Vada": 40,
             "Auto Fare": {
                 "Me": -10,
                 "Debojyoti": 10
@@ -54,10 +52,7 @@
         },
         "08 May, 2025": {
             "Farewell Food": 100,
-            "Ice-cream": {
-                "Me": 10,
-                "Debojyoti": 10
-            },
+            "Ice-cream": 20,
             "Bazooka": -120,
             "Flowers": {
                 "Debojyoti": 25,

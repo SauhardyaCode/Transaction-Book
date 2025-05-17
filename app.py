@@ -233,6 +233,23 @@ class AddTransWindow:
 
         self.data_read_from_file = read_data()
         all_transactions = copy.deepcopy(self.data_read_from_file["transaction"])
+
+        if date in all_transactions:
+            total_transaction = all_transactions[date][special_keys[4]]
+        else:
+            total_transaction = 0
+        total_frame = tk.Frame(self.data_frame, bg=bg_for_main_frame)
+        totalLabel = tk.Label(total_frame, text="Net Transaction:", bg=bg_for_main_frame, font=("Times New Roman", 15, "bold", "underline"))
+        totalAmout = tk.Label(total_frame, text=abs(total_transaction), bg=bg_for_main_frame, font=("Times New Roman", 15, "bold"))
+        total_frame.pack(pady=(0,10))
+        totalLabel.grid(row=0, column=0, padx=10)
+        totalAmout.grid(row=0, column=1, padx=10)
+        if total_transaction>0:
+            totalAmout.config(fg=colors["red"])
+        else:
+            totalAmout.config(fg=colors["green"])
+
+
         if date in all_transactions:
             transactions = all_transactions[date]
             borrow_transactions = transactions[special_keys[0]]
@@ -1237,4 +1254,4 @@ if __name__ == "__main__":
     obj.show()
 
 #sub-edit options needs to be added now (will add later)
-#unsettled calculation needs tobe added now
+#unsettled calculation needs to be added now
