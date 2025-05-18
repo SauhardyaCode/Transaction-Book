@@ -2,7 +2,7 @@
     "unsettled": {
         "Debojyoti": -221,
         "Sahid": 0,
-        "Arunaditya": 0,
+        "Arunaditya": -30,
         "Rumava": 0,
         "Arpan Da": 0,
         "Arun Da": 0,
@@ -2371,11 +2371,12 @@
         "17 May, 2025": {
             "#Borrow": {
                 "#Null": {
-                    "Arunaditya": {
-                        "Idli": 30
-                    },
                     "Debojyoti": {
                         "Water": 210
+                    },
+                    "Arunaditya": {
+                        "Idli": 30,
+                        "Maggi": 30
                     }
                 },
                 "#Not-Null": {}

@@ -170,7 +170,9 @@ class UnsettledWindow:
         self.add_person_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
         self.personEntry = tk.Entry(self.add_person_frame, textvariable=self.new_person, font=("Comicsans", 15), justify='center')
         self.savePersonBtn = tk.Button(self.add_person_frame, text="Save", font=("Robota", 12), command=lambda:self.add_person(1))
-        self.addPersonBtn = tk.Button(self.main_scrollable_frame, text="Add Person", font=("Robota", 15), command=lambda:self.add_person(0))
+        self.btn_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
+        self.refreshBtn = tk.Button(self.btn_frame, text="Refresh", font=("Robota", 15), command=self.refresh)
+        self.addPersonBtn = tk.Button(self.btn_frame, text="Add Person", font=("Robota", 15), command=lambda:self.add_person(0))
 
         self.slnoLabel= tk.Label(self.display_frame, text="SL NO.", font=("Robota",15, "bold", "underline"), bg=bg_for_main_frame, fg=fg_for_unsettled_heading)
         self.personLabel = tk.Label(self.display_frame, text="PERSON", font=("Robota",15, "bold", "underline"), bg=bg_for_main_frame, fg=fg_for_unsettled_heading)
@@ -179,7 +181,9 @@ class UnsettledWindow:
     def show_elements(self):
         self.title.pack()
         self.display_frame.pack(pady=60, fill='x')
-        self.addPersonBtn.pack(pady=50)
+        self.btn_frame.pack(pady=50)
+        self.refreshBtn.grid(row=0, column=0, padx=30, ipady=2, ipadx=5)
+        self.addPersonBtn.grid(row=0, column=1, padx=30, ipady=2, ipadx=5)
         self.display_frame.grid_columnconfigure(1, weight=1)
         self.slnoLabel.grid(row=0, column=0, padx=(300,0), pady=5)
         self.personLabel.grid(row=0, column=1, pady=5)
@@ -207,10 +211,11 @@ class UnsettledWindow:
             personValue.grid(row=slno, column=1, pady=5)
             amountValue.grid(row=slno, column=2, padx=(0,300), pady=5)
             self.unsettled_elements.append([slnoValue, personValue, amountValue])
+        self.canvas.yview_moveto(0.0)
     
     def add_person(self, flag):
         if flag==0:
-            self.addPersonBtn.pack_forget()
+            self.btn_frame.pack_forget()
             self.add_person_frame.pack(pady=50)
         else:
             data_to_be_written = read_data()
@@ -223,7 +228,13 @@ class UnsettledWindow:
                     write_data(data_to_be_written)
                     self.show_unsettled()
                 self.add_person_frame.pack_forget()
-                self.addPersonBtn.pack(pady=50)
+                self.btn_frame.pack(pady=50)
+    
+    def refresh(self):
+        data = read_data()
+        data["unsettled"] = calculate_unsettled()
+        write_data(data)
+        self.show_unsettled()
 
 class AddTransWindow:
     def __init__(self, main_frame):
@@ -305,7 +316,6 @@ class AddTransWindow:
                 del data_to_be_written["transaction"][date_selected.get()]
                 self.write_data(data_to_be_written)
                 self.show_transactions(date_selected.get())
-                self.canvas.yview_moveto(0.0)
 
     def showDatePopup(self):
         if self.date_popup:
@@ -552,6 +562,7 @@ class AddTransWindow:
                     self.transaction_variables.append([title, money, money_sign])
                     self.transaction_inputs.append([elemTitle, money_entry_element])
                     transaction_sl_no+=1
+        self.canvas.yview_moveto(0.0)
 
     def add_return_transaction(self):
         self.add_return_variables = []
