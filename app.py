@@ -10,7 +10,7 @@ import math
 import copy
 
 colors = {'green':'#598C58', 'red':'#FF0B55'}
-bg_colors = ('#E5D9F2','#C4D9FF','#578FCA', '#FDFAF6', '#F1E7E7', '#9ACBD0')
+bg_colors = ('#E5D9F2','#C4D9FF','#578FCA', '#FDFAF6', "#F5E6E6", '#9ACBD0')
 fg_colors = ('#27548A', "#547792")
 date_format = "%d %b, %Y"
 instruction_str = [("(Green -> He/She owes you money)", "(Green -> You have been paid)"), ("(Red -> You owe him/her money)", "(Red -> You have paid)")]
@@ -40,7 +40,9 @@ def read_data():
 
 def write_data(data):
     with open(PATH+"/data.json", 'w') as f:
-        return json.dump(data, f, indent=4)
+        json.dump(data, f, indent=4)
+    with open(PATH+"../../transaction_book_data.json", 'w') as f:
+        json.dump(data, f, indent=4)
 
 def calculate_unsettled():
     data = read_data()
@@ -334,7 +336,23 @@ class AddTransWindow:
         self.btn_frame.pack(pady=10)
         self.dateOkBtn.grid(row=0,column=0,ipadx=20,padx=15)
         self.dateCancelBtn.grid(row=0,column=1,ipadx=20,padx=15)
+
+    def delete_title_from_person_borrow(self, unique_title, borrow_sl_no):
+        if msg.askyesno("Confirm Delete", "Are you sure you want to delete this sub-transaction?"):
+            data_to_be_written = self.data_read_from_file
+            person, _, _, isNull = self.borrow_variables[borrow_sl_no]
+            del data_to_be_written["transaction"][date_selected.get()][special_keys[0]][special_keys[2-isNull]][person.get()][unique_title]
+            self.write_data(data_to_be_written)
+            self.show_transactions(date_selected.get())
     
+    def delete_person_from_title_borrow(self, unique_person, transaction_sl_no):
+        if msg.askyesno("Confirm Delete", "Are you sure you want to delete this sub-transaction?"):
+            data_to_be_written = self.data_read_from_file
+            title = self.transaction_variables[transaction_sl_no][0]
+            del data_to_be_written["transaction"][date_selected.get()][title.get()][unique_person]
+            self.write_data(data_to_be_written)
+            self.show_transactions(date_selected.get())
+
     def show_transactions(self, date):
         self.return_inputs = []
         self.return_buttons = []
@@ -429,8 +447,8 @@ class AddTransWindow:
                         elemDelResetBtn.grid(row=0,column=1, padx=15, pady=10, ipadx=15)
 
                         elemPersonSelect.config(state='disabled')
-                        self.borrow_buttons.append([elemEditConfBtn, elemDelResetBtn])
 
+                        delBtnList = []
                         for title in transactions[x][human].keys():
                             money.append([tk.StringVar(), tk.IntVar()])
                             money[-1][0].set(title)
@@ -440,18 +458,23 @@ class AddTransWindow:
                             elem_sub_frame = tk.Frame(elem_title_frame, bg=bg_for_main_frame)
                             elemTitle = tk.Entry(elem_sub_frame, font=("Times New Roman", 15), textvariable=money[-1][0], width=20, readonlybackground=bg_for_entry)
                             elemMoney = tk.Entry(elem_sub_frame, font=("Comicsans", 12, "bold"), textvariable=money[-1][1], width=8, readonlybackground=bg_for_entry)
+                            photo = ImageTk.PhotoImage(delete_image)
+                            elemDelBtn = tk.Button(elem_sub_frame, image=photo, bd=0, bg=bg_for_main_frame, command=lambda unique_title=title, borrow_index=borrow_sl_no:self.delete_title_from_person_borrow(unique_title, borrow_index))
+                            elemDelBtn.image = photo
 
                             elem_sub_frame.pack()
                             elemTitle.grid(row=0, column=0, padx=(30, 5), pady=5, ipadx=10, ipady=2)
-                            elemMoney.grid(row=0, column=1, padx=(5, 30), pady=5, ipadx=10, ipady=2)
+                            elemMoney.grid(row=0, column=1, padx=30, pady=5, ipadx=10, ipady=2)
 
                             elemTitle.config(state='readonly')
                             elemMoney.config(state='readonly')
                             money_entry_element.append([elemTitle, elemMoney])
+                            delBtnList.append(elemDelBtn)
 
                             if not isNull:
                                 self.set_transaction_color(money[-1][1], money_sign[-1], elemMoney)
 
+                        self.borrow_buttons.append([elemEditConfBtn, elemDelResetBtn, delBtnList])
                         self.borrow_variables.append([person, money, money_sign, isNull])
                         self.borrow_inputs.append([elemPersonSelect, money_entry_element])
                         borrow_sl_no+=1
@@ -521,8 +544,8 @@ class AddTransWindow:
                     elemDelResetBtn.grid(row=0,column=1, padx=15, pady=10, ipadx=15)
 
                     elemTitle.config(state='readonly')
-                    self.transaction_buttons.append([elemEditConfBtn, elemDelResetBtn])
 
+                    delBtnList = []
                     if type(transactions[x]) == int:
                         money = tk.IntVar()
                         money.set(transactions[x])
@@ -544,21 +567,26 @@ class AddTransWindow:
                             money.append([tk.StringVar(), tk.IntVar()])
                             money[-1][0].set(person)
                             money[-1][1].set(sub_transactions[person])
-                            money_sign.append(int(math.copysign(1,money[-1][1].get())))
 
                             elem_money_sub_frame = tk.Frame(elem_money_frame, bg=bg_for_main_frame)
                             elemMoneyEntry = tk.Entry(elem_money_sub_frame, font=("Comicsans", 12, "bold"), textvariable=money[-1][1], width=8, readonlybackground=bg_for_entry)
                             elemPersonSelect = ttk.Combobox(elem_money_sub_frame, textvariable=money[-1][0], values=["Me"]+list(self.data_read_from_file["unsettled"].keys()), width=13, font=("Helvetica", 15))
+                            money_sign.append(int(math.copysign(1,money[-1][1].get())))
+                            photo = ImageTk.PhotoImage(delete_image)
+                            elemDelBtn = tk.Button(elem_money_sub_frame, image=photo, bd=0, bg=bg_for_main_frame, command=lambda unique_person=person, transaction_index=transaction_sl_no:self.delete_person_from_title_borrow(unique_person, transaction_index))
+                            elemDelBtn.image = photo
 
                             elemMoneyEntry.config(state='readonly')
                             elemPersonSelect.config(state='disabled')
                             self.set_transaction_color(money[-1][1], money_sign[-1], elemMoneyEntry)
                             money_entry_element.append([elemMoneyEntry, elemPersonSelect])
+                            delBtnList.append(elemDelBtn)
 
                             elem_money_sub_frame.pack()
                             elemMoneyEntry.grid(row=0,column=0, padx=(30,5), pady=5, ipady=2, ipadx=10)
                             elemPersonSelect.grid(row=0,column=1, padx=(5,30), pady=5)
 
+                    self.transaction_buttons.append([elemEditConfBtn, elemDelResetBtn, delBtnList])
                     self.transaction_variables.append([title, money, money_sign])
                     self.transaction_inputs.append([elemTitle, money_entry_element])
                     transaction_sl_no+=1
@@ -784,10 +812,6 @@ class AddTransWindow:
         if new_person==select_text:
             msg.showerror(f"No Person Selected", "Person for borrow transaction can't be empty!")
             return
-        
-        if new_person in existing_persons:
-            msg.showerror(f"Duplicate Person ({new_person})", "This person already exists on this day's selected transaction type!")
-            return
 
         if (self.add_borrow_variables):
             title_list = []
@@ -804,7 +828,16 @@ class AddTransWindow:
             if len(title_list)!=len(set(title_list)):
                 msg.showerror(f"Duplicate Titles", "Remove same titles from multiple fields")
                 return
-            data_to_be_written["transaction"][date_selected.get()][special_keys[0]][null_value][new_person] = title_dict
+            
+            if new_person in existing_persons:
+                for title in title_list:
+                    if title in data_to_be_written["transaction"][date_selected.get()][special_keys[0]][null_value][new_person].keys():
+                        msg.showerror(f"Duplicate Titles", "This title for this person's transaction already exists!")
+                        return
+                data_to_be_written["transaction"][date_selected.get()][special_keys[0]][null_value][new_person].update(title_dict)
+            else:
+                data_to_be_written["transaction"][date_selected.get()][special_keys[0]][null_value][new_person] = title_dict
+
         else:
            self.borrow_popup.destroy()
 
@@ -922,9 +955,6 @@ class AddTransWindow:
             msg.showerror(f"No Title", "Title for transaction can't be empty!")
             return
         
-        if new_title in existing_titles:
-            msg.showerror(f"Duplicate Title ({new_title})", "This title already exists on this day's transaction")
-            return
 
         if (self.add_transaction_variables):
             person_list = []
@@ -940,9 +970,30 @@ class AddTransWindow:
             if len(person_list)!=len(set(person_list)):
                 msg.showerror(f"Duplicate Person", "Remove same person names from multiple fields")
                 return
-            data_to_be_written["transaction"][date_selected.get()][new_title] = person_dict
+            
+            if new_title in existing_titles:
+                data = data_to_be_written["transaction"][date_selected.get()][new_title]
+                if type(data)==int:
+                    data = {"Me": data}
+                    data_to_be_written["transaction"][date_selected.get()][new_title] = data
+                for person in person_list:
+                    if person in data.keys():
+                        msg.showerror(f"Duplicate Persons", "This person for this title's transaction already exists!")
+                        return
+                data_to_be_written["transaction"][date_selected.get()][new_title].update(person_dict)
+            else:
+                data_to_be_written["transaction"][date_selected.get()][new_title] = person_dict
+
         else:
-            data_to_be_written["transaction"][date_selected.get()][new_title] = self.amount_var_for_add_transaction.get() 
+            data = data_to_be_written["transaction"][date_selected.get()][new_title]
+            if new_title in existing_titles:
+                if type(data)==dict and "Me" not in data.keys():
+                    data_to_be_written["transaction"][date_selected.get()][new_title].update({"Me": self.amount_var_for_add_transaction.get()})
+                else:
+                    msg.showerror(f"Duplicate Title ({new_title})", "This title already exists on this day's transaction")
+                    return
+            else:
+                data_to_be_written["transaction"][date_selected.get()][new_title] = self.amount_var_for_add_transaction.get() 
         
         for key, _ in data_list_by_date:
             if key.startswith('#'):
@@ -978,15 +1029,21 @@ class AddTransWindow:
     def edit_save_transaction(self, transaction_sl_no, net_sl_no):
         edit_ok_btn = self.transaction_buttons[transaction_sl_no][0]
         del_cancel_btn = self.transaction_buttons[transaction_sl_no][1]
+        delBtns = self.transaction_buttons[transaction_sl_no][2]
         inputs = self.transaction_inputs[transaction_sl_no]
 
         if edit_ok_btn.cget('text') == 'Edit':
             #changing colors of all other inputs that are not editable now
-            self.change_colors_of_cancelled()
+            self.cancel_editing_others()
 
             #changing button labels
             edit_ok_btn.config(text='Save')
             del_cancel_btn.config(text='Cancel')
+
+            #enabling the delete buttons for all
+            if len(delBtns)>1:
+                for delBtn in delBtns:
+                    delBtn.grid(row=0, column=2, padx=(5, 30))
 
             #making the inputs editable
             for inp in inputs:
@@ -1053,11 +1110,16 @@ class AddTransWindow:
     def cancel_delete_transaction(self, transaction_sl_no, net_sl_no=None, called_from_other_function=False):
         edit_ok_btn = self.transaction_buttons[transaction_sl_no][0]
         del_cancel_btn = self.transaction_buttons[transaction_sl_no][1]
+        delBtns = self.transaction_buttons[transaction_sl_no][2]
         inputs = self.transaction_inputs[transaction_sl_no]
 
         if del_cancel_btn.cget('text') == 'Cancel' or called_from_other_function:
             edit_ok_btn.config(text='Edit')
             del_cancel_btn.config(text='Delete')
+
+            #disabling the delete buttons for all
+            for delBtn in delBtns:
+                delBtn.grid_forget()
             
             for inp in inputs:
                 if type(inp)==list:
@@ -1090,15 +1152,21 @@ class AddTransWindow:
     def edit_save_borrow(self, borrow_sl_no, sl_no_options):
         edit_ok_btn = self.borrow_buttons[borrow_sl_no][0]
         del_cancel_btn = self.borrow_buttons[borrow_sl_no][1]
+        delBtns = self.borrow_buttons[borrow_sl_no][2]
         inputs = self.borrow_inputs[borrow_sl_no]
 
         if edit_ok_btn.cget('text') == 'Edit':
             #changing colors of all other inputs that are not editable now
-            self.change_colors_of_cancelled()
+            self.cancel_editing_others()
 
             #changing button labels
             edit_ok_btn.config(text='Save')
             del_cancel_btn.config(text='Cancel')
+
+            #enabling the delete options for each
+            if len(delBtns)>1:
+                for delBtn in delBtns:
+                    delBtn.grid(row=0, column=2, padx=(5, 30))
 
             #making the inputs editable
             for inp in inputs:
@@ -1145,6 +1213,10 @@ class AddTransWindow:
             edit_ok_btn.config(text='Edit')
             del_cancel_btn.config(text='Delete')
 
+            #disabling the delete options for each
+            for delBtn in delBtns:
+                delBtn.grid_forget()
+
             money_dict = {}
             for title, amount in money_var:
                 amount_value = amount.get()
@@ -1168,6 +1240,7 @@ class AddTransWindow:
     def cancel_delete_borrow(self, borrow_sl_no, sl_no_options=None, called_from_other_function=False):
         edit_ok_btn = self.borrow_buttons[borrow_sl_no][0]
         del_cancel_btn = self.borrow_buttons[borrow_sl_no][1]
+        delBtns = self.borrow_buttons[borrow_sl_no][2]
         inputs = self.borrow_inputs[borrow_sl_no]
 
         if del_cancel_btn.cget('text') == 'Cancel' or called_from_other_function:
@@ -1181,6 +1254,10 @@ class AddTransWindow:
                         sub_inp[1].config(state='readonly')
                 else:
                     inp.config(state='disabled')
+            
+            #disabling the delete options for each
+            for delBtn in delBtns:
+                delBtn.grid_forget()
 
             self.restore_data_on_cancel()
             for i, sub_inp in enumerate(inputs[1]):
@@ -1210,7 +1287,7 @@ class AddTransWindow:
         inputs = self.return_inputs[return_sl_no]
 
         if edit_ok_btn.cget('text') == 'Edit':
-            self.change_colors_of_cancelled()
+            self.cancel_editing_others()
 
             #changing button labels
             edit_ok_btn.config(text='Save')
@@ -1333,7 +1410,7 @@ class AddTransWindow:
             person_var.set(person)
             money_var.set(abs(data_return[person]))
 
-    def change_colors_of_cancelled(self):
+    def cancel_editing_others(self):
         for i in range(len(self.transaction_inputs)):
             self.cancel_delete_transaction(i, called_from_other_function=True)
         

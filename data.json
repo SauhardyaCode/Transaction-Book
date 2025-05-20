@@ -1,14 +1,14 @@
 {
     "unsettled": {
-        "Debojyoti": -221,
+        "Debojyoti": -203,
         "Sahid": 0,
-        "Arunaditya": -30,
+        "Arunaditya": 0,
         "Rumava": 0,
         "Arpan Da": 0,
         "Arun Da": 0,
-        "Amiul": 15,
+        "Amiul": 0,
         "Shreyak": 50,
-        "Souptik": -7,
+        "Souptik": 0,
         "Gaurav": 0,
         "Abhijit": 0,
         "Swarup": 0,
@@ -2263,11 +2263,12 @@
             },
             "#Borrow": {
                 "#Null": {
-                    "Debojyoti": {
-                        "Treat to Debojyoti": 50
-                    },
                     "Arunaditya": {
                         "Ice-cream": 25
+                    },
+                    "Debojyoti": {
+                        "Treat (for Debojyoti)": 40,
+                        "Mayonaise (in share)": 95
                     }
                 },
                 "#Not-Null": {
@@ -2371,18 +2372,68 @@
         "17 May, 2025": {
             "#Borrow": {
                 "#Null": {
-                    "Debojyoti": {
-                        "Water": 210
-                    },
                     "Arunaditya": {
                         "Idli": 30,
                         "Maggi": 30
+                    },
+                    "Debojyoti": {
+                        "Water": 210
                     }
                 },
                 "#Not-Null": {}
             },
             "#Return": {},
             "#Total": 0
+        },
+        "18 May, 2025": {
+            "Bread": {
+                "Debojyoti": 18,
+                "Me": 18
+            },
+            "Biscuits": {
+                "Debojyoti": 10,
+                "Me": 10
+            },
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Arunaditya": 30
+            },
+            "#Total": 86
+        },
+        "19 May, 2025": {
+            "Auto Fare": {
+                "Debojyoti": 10,
+                "Me": 10
+            },
+            "Idli": 30,
+            "Paneer Roll": {
+                "Debojyoti": 65
+            },
+            "#Borrow": {
+                "#Null": {
+                    "Souptik": {
+                        "Lassi": 20
+                    }
+                },
+                "#Not-Null": {}
+            },
+            "#Return": {
+                "Amiul": -15,
+                "Souptik": 27
+            },
+            "#Total": 127
+        },
+        "20 May, 2025": {
+            "Wifi": 157,
+            "#Borrow": {
+                "#Null": {},
+                "#Not-Null": {}
+            },
+            "#Return": {},
+            "#Total": 157
         }
     }
 }
