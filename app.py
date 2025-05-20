@@ -41,8 +41,11 @@ def read_data():
 def write_data(data):
     with open(PATH+"/data.json", 'w') as f:
         json.dump(data, f, indent=4)
-    with open(PATH+"../../transaction_book_data.json", 'w') as f:
-        json.dump(data, f, indent=4)
+    try:
+        with open(PATH+"../../transaction_book_data.json", 'w') as f:
+            json.dump(data, f, indent=4)
+    except FileNotFoundError:
+        print("Backup File Couldn't be updated!")
 
 def calculate_unsettled():
     data = read_data()
@@ -1449,6 +1452,13 @@ class AddTransWindow:
 
 
 if __name__ == "__main__":
+    try:
+        transaction_data = read_data()
+    except FileNotFoundError:
+        print("File Doesn't Exist!")
+        print("Creating the File...")
+        write_data({"unsettled":{}, "transaction":{}})
+        print("Empty data.json file created successfully!")
     obj = BroilerPlate()
     obj.show()
 
