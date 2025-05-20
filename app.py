@@ -988,8 +988,8 @@ class AddTransWindow:
                 data_to_be_written["transaction"][date_selected.get()][new_title] = person_dict
 
         else:
-            data = data_to_be_written["transaction"][date_selected.get()][new_title]
             if new_title in existing_titles:
+                data = data_to_be_written["transaction"][date_selected.get()][new_title]
                 if type(data)==dict and "Me" not in data.keys():
                     data_to_be_written["transaction"][date_selected.get()][new_title].update({"Me": self.amount_var_for_add_transaction.get()})
                 else:
