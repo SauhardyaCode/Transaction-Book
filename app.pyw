@@ -62,12 +62,18 @@ def calculate_unsettled():
                     if null_value==special_keys[1]:factor=-1
                     for person, amounts in list(trans.items()):
                         amount = sum(amounts.values())
-                        unsettled_dict[person] += amount*factor
+                        try:
+                            unsettled_dict[person] += amount*factor
+                        except KeyError:
+                            print(f"Person ({person}) removed from LIST (nothing unsettled)")
             else:
                 if type(value)==dict:
                     for person, amount in list(value.items()):
                         if person!="Me":
-                            unsettled_dict[person] += amount
+                            try:
+                                unsettled_dict[person] += amount
+                            except KeyError:
+                                print(f"Person ({person}) removed from LIST (nothing unsettled)")
 
     return unsettled_dict
 
