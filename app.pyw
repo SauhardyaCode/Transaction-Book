@@ -8,12 +8,17 @@ import json
 import os
 import math
 import copy
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 colors = {'green':'#598C58', 'red':'#FF0B55'}
 bg_colors = ('#E5D9F2','#C4D9FF','#578FCA', '#FDFAF6', "#F5E6E6", '#9ACBD0')
+# bg_colors = ("#3A383D","#353C4A","#2D4C6D", "#574E43", "#6D4F4F", "#43595C")
+# text_color = 'white'
 fg_colors = ('#27548A', "#547792")
 date_format = "%d %b, %Y"
-instruction_str = [("(Green -> He/She owes you money)", "(Green -> You have been paid)"), ("(Red -> You owe him/her money)", "(Red -> You have paid)")]
+instruction_str = [("(Green -> He/She owes you money)", "(Green -> You have been paid)", "(Green -> Money Credited)"), ("(Red -> You owe him/her money)", "(Red -> You have paid)", "(Red -> Money Debited)")]
 date_selected = None
 instructions = []
 data_to_be_written = None
@@ -77,6 +82,20 @@ def calculate_unsettled():
 
     return unsettled_dict
 
+def create_canvas_scrollbar(object):
+    object.canvas = tk.Canvas(object.main_frame, bg=bg_for_main_frame)
+    object.scrollbar = tk.Scrollbar(object.main_frame, orient="vertical", command=object.canvas.yview)
+    object.scrollbar.pack(side='right', fill='y')
+    object.canvas.pack(side='left', fill='both', expand=True)
+    object.canvas.configure(yscrollcommand=object.scrollbar.set)
+
+    object.main_scrollable_frame = tk.Frame(object.canvas, bg=bg_for_main_frame)
+    object.canvas_window = object.canvas.create_window((0, 0), window=object.main_scrollable_frame, anchor='nw')
+
+    object.main_scrollable_frame.bind("<Configure>", lambda e: object.canvas.configure(scrollregion=object.canvas.bbox("all")))
+    object.canvas.bind('<Configure>', lambda e: object.canvas.itemconfig(object.canvas_window, width=e.width))
+    object.canvas.bind_all("<MouseWheel>", lambda e: object.canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
+
 class BroilerPlate(tk.Tk):
     def __init__(self):
         global date_selected, instructions
@@ -136,18 +155,116 @@ class BroilerPlate(tk.Tk):
         WindowClass(self.main_frame)
     
     def show(self):
+        HomeWindow(self.main_frame)
         self.mainloop()
 
 class HomeWindow:
     def __init__(self, main_frame):
         global instructions
-        instructions[0].set(instruction_str[0][0])
-        instructions[1].set(instruction_str[1][0])
+        instructions[0].set(instruction_str[0][2])
+        instructions[1].set(instruction_str[1][2])
+        self.current_month = datetime.now().strftime("%b")
+        self.current_year = datetime.now().strftime("%Y")
         self.main_frame = main_frame
         self.create_elememts()
+        self.show_elements()
     
     def create_elememts(self):
-        tk.Label(self.main_frame, text="Hello Home").pack()
+        create_canvas_scrollbar(self)
+
+        # Main Elements
+        self.title = tk.Label(self.main_scrollable_frame, text="Home", font=("Verdana", 18, "underline"), bg=bg_for_main_frame)
+        self.display_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
+        
+        self.monthAnalysisLabel = tk.Label(self.display_frame, text=f"Monthly Stats ({self.current_month}, {self.current_year})", font=("Robota",15,"underline"), bg=bg_for_main_frame, fg=fg_colors[0])
+        self.month_analysis_frame = tk.Frame(self.display_frame, bg=bg_for_main_frame)
+        self.monthDebitLabel = tk.Label(self.month_analysis_frame, text="Net Debit: ", font=("Robota",15), bg=bg_for_main_frame)
+        self.monthDebitValueLabel = tk.Label(self.month_analysis_frame, text= self.calculate_month_total(self.current_month, self.current_year, debit=True), font=("Robota",15), bg=bg_for_main_frame, fg=colors["red"])
+        self.monthCreditLabel = tk.Label(self.month_analysis_frame, text="Net Credit: ", font=("Robota",15), bg=bg_for_main_frame)
+        self.monthCreditValueLabel = tk.Label(self.month_analysis_frame, text= self.calculate_month_total(self.current_month, self.current_year, credit=True), font=("Robota",15), bg=bg_for_main_frame, fg=colors["green"])
+        month_total = self.calculate_month_total(self.current_month, self.current_year)
+        self.monthTotalLabel = tk.Label(self.month_analysis_frame, text="Month's Total:", font=("Robota",15), bg=bg_for_main_frame)
+        self.monthTotalValueLabel = tk.Label(self.month_analysis_frame, text= abs(month_total), font=("Robota",15), bg=bg_for_main_frame, fg=colors["green" if month_total<=0 else "red"])
+
+
+    def show_elements(self):
+        self.title.pack()
+        self.display_frame.pack(pady=60, fill='x')
+        self.monthAnalysisLabel.pack()
+        self.month_analysis_frame.pack(padx=100, pady=50, side="left", anchor="n")
+        self.monthDebitLabel.grid(row=0, column=0, padx=20)
+        self.monthDebitValueLabel.grid(row=0, column=1)
+        self.monthCreditLabel.grid(row=1, column=0, padx=20)
+        self.monthCreditValueLabel.grid(row=1, column=1)
+        self.monthTotalLabel.grid(row=2, column=0, padx=20)
+        self.monthTotalValueLabel.grid(row=2, column=1)
+
+        plot_data = [[],[]]
+        data = read_data()
+        transactions = data["transaction"]
+        for date, value in transactions.items():
+            if date.endswith(f"{self.current_month}, {self.current_year}"):
+                plot_data[0].append(date.split()[0])
+                plot_data[1].append(value[special_keys[4]])
+        self.plot_graph(plot_data)
+
+    def calculate_month_total(self, month, year, debit=False, credit=False):
+        total=0
+        debit_total=0
+        credit_total=0
+        data = read_data()
+        transactions = data["transaction"]
+        for date, value in transactions.items():
+            if date.endswith(f"{month}, {year}"):
+                if debit or credit:
+                    for title, expense in value.items():
+                        if title not in special_keys:
+                            if type(expense)==int:
+                                if expense>0: debit_total+=expense
+                                else: credit_total-=expense
+                            else:
+                                for money in expense.values():
+                                    if money>0: debit_total+=money
+                                    else: credit_total-=money
+                        elif title==special_keys[0]:
+                            for subtype, trans in expense.items():
+                                if subtype==special_keys[2]:
+                                    for purpose in trans.values():
+                                        for money in purpose.values():
+                                            if money>0: debit_total+=money
+                                            else: credit_total-=money
+                        elif title==special_keys[3]:
+                            for money in expense.values():
+                                if money>0: debit_total+=money
+                                else: credit_total-=money
+                else:
+                    total+=transactions[date][special_keys[4]]
+        if debit: return debit_total
+        if credit: return credit_total
+        return total
+    
+    def plot_graph(self, data):
+        figure = plt.Figure(figsize=(30,5), dpi=70)
+        figure_plot = figure.add_subplot(1, 1, 1)
+
+        sorted_indices = np.argsort(np.array(data[0]))
+        x = np.array(data[0])[sorted_indices]
+        y = np.array(data[1])[sorted_indices]
+
+        figure_plot.plot(x, y, color='blue', linestyle='-', marker='o', label='Line 1')
+        figure_plot.axhline(0, color='black', linewidth=1, linestyle='--') 
+        figure_plot.fill_between(x, y, where= (y<0), color='green', alpha=0.5, interpolate=True)
+        figure_plot.fill_between(x, y, where= (y>0), color='red', alpha=0.5, interpolate=True)
+
+        figure_plot.set_title("Net Transaction Each Day")
+        figure_plot.set_xlabel("Day")
+        figure_plot.set_ylabel("Net Transaction")
+        figure_plot.legend()
+
+        canvas = FigureCanvasTkAgg(figure, master=self.display_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="right", padx=100, pady=50, anchor="w")
+
 
 class UnsettledWindow:
     def __init__(self, main_frame):
@@ -161,21 +278,9 @@ class UnsettledWindow:
         self.show_unsettled()
     
     def create_elememts(self):
-        # Canvas For Scrollbar
-        self.canvas = tk.Canvas(self.main_frame, bg=bg_for_main_frame)
-        self.scrollbar = tk.Scrollbar(self.main_frame, orient="vertical", command=self.canvas.yview)
-        self.scrollbar.pack(side='right', fill='y')
-        self.canvas.pack(side='left', fill='both', expand=True)
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        create_canvas_scrollbar(self)
 
-        self.main_scrollable_frame = tk.Frame(self.canvas, bg=bg_for_main_frame)
-        self.canvas_window = self.canvas.create_window((0, 0), window=self.main_scrollable_frame, anchor='nw')
-
-        self.main_scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.canvas.bind('<Configure>', lambda e: self.canvas.itemconfig(self.canvas_window, width=e.width))
-        self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
-
-         # Main Elements
+        # Main Elements
         self.title = tk.Label(self.main_scrollable_frame, text="Unsettled Amounts", font=("Verdana", 18, "underline"), bg=bg_for_main_frame)
         self.display_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
         self.add_person_frame = tk.Frame(self.main_scrollable_frame, bg=bg_for_main_frame)
@@ -263,19 +368,7 @@ class AddTransWindow:
         self.show_elements()
     
     def create_elememts(self):
-        # Canvas For Scrollbar
-        self.canvas = tk.Canvas(self.main_frame, bg=bg_for_main_frame)
-        self.scrollbar = tk.Scrollbar(self.main_frame, orient="vertical", command=self.canvas.yview)
-        self.scrollbar.pack(side='right', fill='y')
-        self.canvas.pack(side='left', fill='both', expand=True)
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
-
-        self.main_scrollable_frame = tk.Frame(self.canvas, bg=bg_for_main_frame)
-        self.canvas_window = self.canvas.create_window((0, 0), window=self.main_scrollable_frame, anchor='nw')
-
-        self.main_scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.canvas.bind('<Configure>', lambda e: self.canvas.itemconfig(self.canvas_window, width=e.width))
-        self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
+        create_canvas_scrollbar(self)
         
         # Main Elements
         self.title = tk.Label(self.main_scrollable_frame, text="Add Transaction", font=("Verdana", 18, "underline"), bg=bg_for_main_frame)
