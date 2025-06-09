@@ -39,18 +39,20 @@ special_keys = ("#Borrow", "#Null", "#Not-Null", "#Return", "#Total")
 PATH = os.path.dirname(__file__)
 delete_image = Image.open(PATH+"/delete.png").resize((25,25))
 
-def read_data():
-    with open(PATH+"/data.json") as f:
+def read_data(path="/data.json"):
+    with open(PATH+path) as f:
         return json.load(f)
 
-def write_data(data):
+def write_data(data=None, retrieve=False):
     with open(PATH+"/data.json", 'w') as f:
-        json.dump(data, f, indent=4)
-    try:
-        with open(PATH+"../../transaction_book_data.json", 'w') as f:
+        if retrieve:
+            backup = read_data("/../transaction_book_data.json")
+            json.dump(backup, f, indent=4)
+            return
+        else:
             json.dump(data, f, indent=4)
-    except FileNotFoundError:
-        print("Backup File Couldn't be updated!")
+    with open(PATH+"/../transaction_book_data.json", 'w') as f:
+        json.dump(data, f, indent=4)
 
 def calculate_unsettled():
     data = read_data()
@@ -1554,11 +1556,17 @@ if __name__ == "__main__":
     try:
         transaction_data = read_data()
     except FileNotFoundError:
-        print("File Doesn't Exist!")
+        print("Main Data File Doesn't Exist!")
         print("Creating the File...")
-        write_data({"unsettled":{}, "transaction":{}})
-        print("Empty data.json file created successfully!")
+        try:
+            transaction_data = read_data("../../transaction_book_data.json")
+        except FileNotFoundError:
+            print("Backup Data File Doesn't Exist too!")
+            print("Creating the File...")
+            write_data({"unsettled":{}, "transaction":{}})
+            print("Empty data.json and transaction_book_data.json file created successfully!")
+        else:
+            write_data(retrieve=True)
+            print("Data retrieved from transaction_book_data.json to new data.json file successfully!")
     obj = BroilerPlate()
     obj.show()
-
-#sub-edit options needs to be added now (will add later)
