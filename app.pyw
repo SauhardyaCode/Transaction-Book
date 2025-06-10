@@ -15,8 +15,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 MONTHS = ('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
 colors = {'green':'#598C58', 'red':'#FF0B55'}
 bg_colors = ('#E5D9F2','#C4D9FF','#578FCA', '#FDFAF6', "#F5E6E6", '#9ACBD0')
-# bg_colors = ("#3A383D","#353C4A","#2D4C6D", "#574E43", "#6D4F4F", "#43595C")
-# text_color = 'white'
 fg_colors = ('#27548A', "#547792")
 date_format = "%d %b, %Y"
 instruction_str = [("(Green -> He/She owes you money)", "(Green -> You have been paid)", "(Green -> Money Credited)"), ("(Red -> You owe him/her money)", "(Red -> You have paid)", "(Red -> Money Debited)")]
@@ -98,6 +96,11 @@ def create_canvas_scrollbar(object):
     object.main_scrollable_frame.bind("<Configure>", lambda e: object.canvas.configure(scrollregion=object.canvas.bbox("all")))
     object.canvas.bind('<Configure>', lambda e: object.canvas.itemconfig(object.canvas_window, width=e.width))
     object.canvas.bind_all("<MouseWheel>", lambda e: object.canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
+
+class NoScrollCombobox(ttk.Combobox):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.bind("<MouseWheel>", lambda e: "break")
 
 class BroilerPlate(tk.Tk):
     def __init__(self):
@@ -187,38 +190,54 @@ class HomeWindow:
         self.title.pack()
         self.display_frame.pack(pady=60, fill='x')
 
+        self.create_monthly_stats()
+        self.update_monthly_stats()
         self.show_monthly_stats()
+
+        self.create_yearly_stats()
+        self.update_yearly_stats()
         self.show_yearly_stats()
     
-    def show_monthly_stats(self):
+    def create_monthly_stats(self):
         #creating elements
-        self.monthAnalysisLabel = tk.Label(self.display_frame, text=f"Monthly Stats ({self.chosen_month}, {self.chosen_year})", font=("Robota",15,"underline"), bg=bg_for_main_frame, fg=fg_colors[0])
-
+        self.monthAnalysisLabel = tk.Label(self.display_frame, font=("Robota",15,"underline"), bg=bg_for_main_frame, fg=fg_colors[0])
         self.month_stats_frame = tk.Frame(self.display_frame, bg=bg_for_main_frame)
         self.month_analysis_frame = tk.Frame(self.month_stats_frame, bg=bg_for_main_frame)
 
         self.monthDebitLabel = tk.Label(self.month_analysis_frame, text="Net Debit: ", font=("Robota",15), bg=bg_for_main_frame)
-        self.monthDebitValueLabel = tk.Label(self.month_analysis_frame, text= self.calculate_month_total(self.chosen_month, self.chosen_year, debit=True), font=("Robota",15), bg=bg_for_main_frame, fg=colors["red"])
+        self.monthDebitValueLabel = tk.Label(self.month_analysis_frame, font=("Robota",15), bg=bg_for_main_frame, fg=colors["red"])
         self.monthCreditLabel = tk.Label(self.month_analysis_frame, text="Net Credit: ", font=("Robota",15), bg=bg_for_main_frame)
-        self.monthCreditValueLabel = tk.Label(self.month_analysis_frame, text= self.calculate_month_total(self.chosen_month, self.chosen_year, credit=True), font=("Robota",15), bg=bg_for_main_frame, fg=colors["green"])
+        self.monthCreditValueLabel = tk.Label(self.month_analysis_frame, font=("Robota",15), bg=bg_for_main_frame, fg=colors["green"])
 
-        month_total = self.calculate_month_total(self.chosen_month, self.chosen_year)
         self.monthTotalLabel = tk.Label(self.month_analysis_frame, text="Month's Total:", font=("Robota",15), bg=bg_for_main_frame)
-        self.monthTotalValueLabel = tk.Label(self.month_analysis_frame, text= abs(month_total), font=("Robota",15), bg=bg_for_main_frame, fg=colors["green" if month_total<=0 else "red"])
+        self.monthTotalValueLabel = tk.Label(self.month_analysis_frame, bg=bg_for_main_frame, font=("Robota",15))
+        self.monthGraph = None
 
         self.month_select_frame = tk.Frame(self.display_frame, bg=bg_for_main_frame)
         self.monthSelectLabel = tk.Label(self.month_select_frame, text="Select Month and Year:", font=("Robota",15), bg=bg_for_main_frame)
 
-        month = tk.StringVar()
-        year = tk.StringVar()
-        month.set(self.chosen_month)
-        year.set(self.chosen_year)
-        self.monthSelect = ttk.Combobox(self.month_select_frame, textvariable=month, values=MONTHS, width=15, font=("Helvetica", 15))
-        self.yearSelect = ttk.Combobox(self.month_select_frame, textvariable=year, values=[str(y) for y in range(int(self.current_year), 1964, -1)], width=15, font=("Helvetica", 15))
-        self.monthSelect.config(state='readonly')
-        self.yearSelect.config(state='readonly')
-        self.changeMonthBtn = tk.Button(self.month_select_frame, text="Show", font=("Robota", 12), command=lambda:self.refresh_monthly_stats(month.get()[:3], year.get()))
+        self.monthly_stat_var_month = tk.StringVar()
+        self.monthly_stat_var_year = tk.StringVar()
+        self.monthly_stat_var_month.set(MONTHS[[i for i in range(12) if MONTHS[i][:3]==self.chosen_month][0]])
+        self.monthly_stat_var_year.set(self.chosen_year)
+        self.monthSelect = NoScrollCombobox(self.month_select_frame, textvariable=self.monthly_stat_var_month, values=MONTHS, width=15, font=("Helvetica", 15), state='readonly')
+        self.yearSelect = NoScrollCombobox(self.month_select_frame, textvariable=self.monthly_stat_var_year, values=[str(y) for y in range(int(self.current_year), 1964, -1)], width=15, font=("Helvetica", 15), state='readonly')
+        self.changeMonthBtn = tk.Button(self.month_select_frame, text="Show", font=("Robota", 12), command=lambda:self.refresh_monthly_stats())
+    
+    def update_monthly_stats(self):
+        self.monthAnalysisLabel.config(text=f"Monthly Stats ({self.chosen_month}, {self.chosen_year})")
+        self.monthDebitValueLabel.config(text= self.calculate_month_total(self.chosen_month, self.chosen_year, debit=True))
+        self.monthCreditValueLabel.config(text= self.calculate_month_total(self.chosen_month, self.chosen_year, credit=True))
 
+        month_total = self.calculate_month_total(self.chosen_month, self.chosen_year)
+        self.monthTotalValueLabel.config(text= abs(month_total), fg=colors["green" if month_total<=0 else "red"])
+
+        if self.monthGraph:
+            self.monthGraph.get_tk_widget().destroy()
+        self.monthGraph = self.plot_daily_graph()
+        self.monthGraph.get_tk_widget().grid(row=0, column=1)
+
+    def show_monthly_stats(self):
         #showing elements
         self.monthAnalysisLabel.pack()
         self.month_stats_frame.pack(pady=30, padx=120)
@@ -229,21 +248,19 @@ class HomeWindow:
         self.monthCreditValueLabel.grid(row=1, column=1)
         self.monthTotalLabel.grid(row=2, column=0, padx=20)
         self.monthTotalValueLabel.grid(row=2, column=1)
-        self.plot_daily_graph()
-        self.month_select_frame.pack(fill='x', padx=120, pady=30)
+        self.month_select_frame.pack(padx=120, pady=30)
         self.monthSelectLabel.grid(row=0, column=0, padx=(0, 30))
         self.monthSelect.grid(row=0, column=1, padx=30)
         self.yearSelect.grid(row=0, column=2, padx=30)
         self.changeMonthBtn.grid(row=0, column=3, padx=(30,0))
     
-    def refresh_monthly_stats(self, month, year):
+    def refresh_monthly_stats(self):
+        month = self.monthly_stat_var_month.get()[:3]
+        year = self.monthly_stat_var_year.get()
         if self.chosen_month!=month or self.chosen_year!=year:
             self.chosen_month = month
             self.chosen_year = year
-            self.monthAnalysisLabel.destroy()
-            self.month_stats_frame.destroy()
-            self.month_select_frame.destroy()
-            self.show_monthly_stats()
+            self.update_monthly_stats()
 
     def calculate_month_total(self, month, year, debit=False, credit=False):
         total=0
@@ -296,7 +313,7 @@ class HomeWindow:
         x = np.array(plot_data[0])[sorted_indices]
         y = np.array(plot_data[1])[sorted_indices]
 
-        figure_plot.plot(x, y, color='blue', linestyle='-', marker='o', label='Line 1')
+        figure_plot.plot(x, y, color='blue', linestyle='-', marker='o', label='Money')
         figure_plot.axhline(0, color='black', linewidth=1, linestyle='--') 
         figure_plot.fill_between(x, y, where= (y<0), color='green', alpha=0.5, interpolate=True)
         figure_plot.fill_between(x, y, where= (y>0), color='red', alpha=0.5, interpolate=True)
@@ -309,33 +326,48 @@ class HomeWindow:
         canvas = FigureCanvasTkAgg(figure, master=self.month_stats_frame)
         figure.tight_layout()
         canvas.draw()
-        canvas.get_tk_widget().grid(row=0, column=1)
+        return canvas
 
-    def show_yearly_stats(self):
+    def create_yearly_stats(self):
         #creating elements
-        self.yearAnalysisLabel = tk.Label(self.display_frame, text=f"Yearly Stats ({self.chosen_year_alone})", font=("Robota",15,"underline"), bg=bg_for_main_frame, fg=fg_colors[0])
+        self.yearAnalysisLabel = tk.Label(self.display_frame, font=("Robota",15,"underline"), bg=bg_for_main_frame, fg=fg_colors[0])
 
         self.year_stats_frame = tk.Frame(self.display_frame, bg=bg_for_main_frame)
         self.year_analysis_frame = tk.Frame(self.year_stats_frame, bg=bg_for_main_frame)
 
         self.yearDebitLabel = tk.Label(self.year_analysis_frame, text="Net Debit: ", font=("Robota",15), bg=bg_for_main_frame)
-        self.yearDebitValueLabel = tk.Label(self.year_analysis_frame, text= self.calculate_year_total(self.chosen_year_alone, debit=True), font=("Robota",15), bg=bg_for_main_frame, fg=colors["red"])
+        self.yearDebitValueLabel = tk.Label(self.year_analysis_frame, font=("Robota",15), bg=bg_for_main_frame, fg=colors["red"])
         self.yearCreditLabel = tk.Label(self.year_analysis_frame, text="Net Credit: ", font=("Robota",15), bg=bg_for_main_frame)
-        self.yearCreditValueLabel = tk.Label(self.year_analysis_frame, text= self.calculate_year_total(self.chosen_year_alone, credit=True), font=("Robota",15), bg=bg_for_main_frame, fg=colors["green"])
+        self.yearCreditValueLabel = tk.Label(self.year_analysis_frame, font=("Robota",15), bg=bg_for_main_frame, fg=colors["green"])
 
-        year_total = self.calculate_year_total(self.chosen_year_alone)
-        self.yearTotalLabel = tk.Label(self.year_analysis_frame, text="Year's Total:" if self.chosen_year_alone!="ALL" else "Grand Total: ", font=("Robota",15), bg=bg_for_main_frame)
-        self.yearTotalValueLabel = tk.Label(self.year_analysis_frame, text= abs(year_total), font=("Robota",15), bg=bg_for_main_frame, fg=colors["green" if year_total<=0 else "red"])
+        self.yearTotalLabel = tk.Label(self.year_analysis_frame, font=("Robota",15), bg=bg_for_main_frame)
+        self.yearTotalValueLabel = tk.Label(self.year_analysis_frame, font=("Robota",15), bg=bg_for_main_frame)
+        self.yearGraph = None
 
         self.year_select_frame = tk.Frame(self.display_frame, bg=bg_for_main_frame)
         self.yearSelectLabel = tk.Label(self.year_select_frame, text="Select Year:", font=("Robota",15), bg=bg_for_main_frame)
 
-        year = tk.StringVar()
-        year.set(self.chosen_year_alone)
-        self.yearSelect = ttk.Combobox(self.year_select_frame, textvariable=year, values=["ALL"]+[str(y) for y in range(int(self.current_year), 1964, -1)], width=15, font=("Helvetica", 15))
+        self.yearly_stat_var_year = tk.StringVar()
+        self.yearly_stat_var_year.set(self.chosen_year_alone)
+        self.yearSelect = NoScrollCombobox(self.year_select_frame, textvariable=self.yearly_stat_var_year, values=["ALL"]+[str(y) for y in range(int(self.current_year), 1964, -1)], width=15, font=("Helvetica", 15))
         self.yearSelect.config(state='readonly')
-        self.changeYearBtn = tk.Button(self.year_select_frame, text="Show", font=("Robota", 12), command=lambda:self.refresh_yearly_stats(year.get()))
+        self.changeYearBtn = tk.Button(self.year_select_frame, text="Show", font=("Robota", 12), command=lambda:self.refresh_yearly_stats())
 
+    def update_yearly_stats(self):
+        self.yearAnalysisLabel.config(text=f"Yearly Stats ({self.chosen_year_alone})")
+        self.yearDebitValueLabel.config(text= self.calculate_year_total(self.chosen_year_alone, debit=True))
+        self.yearCreditValueLabel.config(text= self.calculate_year_total(self.chosen_year_alone, credit=True))
+
+        year_total = self.calculate_year_total(self.chosen_year_alone)
+        self.yearTotalLabel.config(text="Year's Total:" if self.chosen_year_alone!="ALL" else "Grand Total: ")
+        self.yearTotalValueLabel.config(text= abs(year_total), fg=colors["green" if year_total<=0 else "red"])
+
+        if self.yearGraph:
+            self.yearGraph.get_tk_widget().destroy()
+        self.yearGraph = self.plot_monthly_graph()
+        self.yearGraph.get_tk_widget().grid(row=0, column=1)
+
+    def show_yearly_stats(self):
         #showing elements
         self.yearAnalysisLabel.pack(pady=(50,0))
         self.year_stats_frame.pack(pady=30, padx=120)
@@ -346,19 +378,16 @@ class HomeWindow:
         self.yearCreditValueLabel.grid(row=1, column=1)
         self.yearTotalLabel.grid(row=2, column=0, padx=20)
         self.yearTotalValueLabel.grid(row=2, column=1)
-        self.plot_monthly_graph()
         self.year_select_frame.pack(padx=120, pady=30)
         self.yearSelectLabel.grid(row=0, column=0, padx=(0, 30))
         self.yearSelect.grid(row=0, column=1, padx=30)
         self.changeYearBtn.grid(row=0, column=2, padx=(30,0))
     
-    def refresh_yearly_stats(self, year):
+    def refresh_yearly_stats(self):
+        year = self.yearly_stat_var_year.get()
         if self.chosen_year_alone!=year:
             self.chosen_year_alone = year
-            self.yearAnalysisLabel.destroy()
-            self.year_stats_frame.destroy()
-            self.year_select_frame.destroy()
-            self.show_yearly_stats()
+            self.update_yearly_stats()
     
     def calculate_year_total(self, year, debit=False, credit=False):
         total=0
@@ -396,23 +425,20 @@ class HomeWindow:
         y = np.array(plot_data[1])
         colors = ["green" if money<=0 else "red" for money in y]
     
-        # Create bars with different colors
         figure_plot.axhline(0, color='black', linewidth=1, linestyle='--') 
         bars = figure_plot.bar(x, y, width=0.6, color=colors)
         for bar in bars:
             bar.set_alpha(0.5)
         
-        # Customize the plot
         figure_plot.set_title('Net Transaction Per Month', pad=20)
         figure_plot.set_xlabel('Month')
         figure_plot.set_ylabel('Net Transaction')
         
-        # Embed the plot in Tkinter
         canvas = FigureCanvasTkAgg(figure, master=self.year_stats_frame)
         figure.tight_layout()
         canvas.draw()
-        canvas.get_tk_widget().grid(row=0, column=1)
-    
+        return canvas
+          
 class UnsettledWindow:
     def __init__(self, main_frame):
         global instructions
@@ -1695,7 +1721,6 @@ class AddTransWindow:
         write_data(data)
         data["unsettled"] = calculate_unsettled()
         write_data(data)
-
 
 if __name__ == "__main__":
     try:
