@@ -221,7 +221,7 @@ class HomeWindow:
         self.monthly_stat_var_month.set(MONTHS[[i for i in range(12) if MONTHS[i][:3]==self.chosen_month][0]])
         self.monthly_stat_var_year.set(self.chosen_year)
         self.monthSelect = NoScrollCombobox(self.month_select_frame, textvariable=self.monthly_stat_var_month, values=MONTHS, width=15, font=("Helvetica", 15), state='readonly')
-        self.yearSelect = NoScrollCombobox(self.month_select_frame, textvariable=self.monthly_stat_var_year, values=[str(y) for y in range(int(self.current_year), 1964, -1)], width=15, font=("Helvetica", 15), state='readonly')
+        self.yearSelect = NoScrollCombobox(self.month_select_frame, textvariable=self.monthly_stat_var_year, values=[str(y) for y in range(1965, int(self.current_year)+1)], width=15, font=("Helvetica", 15), state='readonly')
         self.changeMonthBtn = tk.Button(self.month_select_frame, text="Show", font=("Robota", 12), command=lambda:self.refresh_monthly_stats())
     
     def update_monthly_stats(self):
@@ -349,7 +349,7 @@ class HomeWindow:
 
         self.yearly_stat_var_year = tk.StringVar()
         self.yearly_stat_var_year.set(self.chosen_year_alone)
-        self.yearSelect = NoScrollCombobox(self.year_select_frame, textvariable=self.yearly_stat_var_year, values=["ALL"]+[str(y) for y in range(int(self.current_year), 1964, -1)], width=15, font=("Helvetica", 15))
+        self.yearSelect = NoScrollCombobox(self.year_select_frame, textvariable=self.yearly_stat_var_year, values=[str(y) for y in range(1965, int(self.current_year)+1)]+["ALL"], width=15, font=("Helvetica", 15))
         self.yearSelect.config(state='readonly')
         self.changeYearBtn = tk.Button(self.year_select_frame, text="Show", font=("Robota", 12), command=lambda:self.refresh_yearly_stats())
 
