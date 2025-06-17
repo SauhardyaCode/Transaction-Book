@@ -11,6 +11,7 @@ import copy
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.patches import Patch
 
 MONTHS = ('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
 colors = {'green':'#598C58', 'red':'#FF0B55'}
@@ -424,6 +425,7 @@ class HomeWindow:
         x = np.array(plot_data[0])
         y = np.array(plot_data[1])
         colors = ["green" if money<=0 else "red" for money in y]
+        y = abs(y)
     
         figure_plot.axhline(0, color='black', linewidth=1, linestyle='--') 
         bars = figure_plot.bar(x, y, width=0.6, color=colors)
@@ -433,6 +435,12 @@ class HomeWindow:
         figure_plot.set_title('Net Transaction Per Month', pad=20)
         figure_plot.set_xlabel('Month')
         figure_plot.set_ylabel('Net Transaction')
+
+        legend_elements = [
+        Patch(facecolor='red', edgecolor='red', alpha=0.5, label='Debit'),
+        Patch(facecolor='green', edgecolor='green', alpha=0.5, label='Credit')
+        ]
+        figure_plot.legend(handles=legend_elements, loc='upper left')
         
         canvas = FigureCanvasTkAgg(figure, master=self.year_stats_frame)
         figure.tight_layout()
