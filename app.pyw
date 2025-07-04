@@ -13,7 +13,9 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.patches import Patch
 
-MONTHS = ('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
+MONTH_DAYS = {'January':31, 'February':28, 'March':31, 'April':30, 'May':31, 'June':30, 'July':31, 'August':31, 'September':30, 'October':31, 'November':30, 'December':31}
+MONTHS = list(MONTH_DAYS.keys())
+DAYS = list(MONTH_DAYS.values())
 colors = {'green':'#598C58', 'red':'#FF0B55'}
 bg_colors = ('#E5D9F2','#C4D9FF','#578FCA', '#FDFAF6', "#F5E6E6", '#9ACBD0')
 fg_colors = ('#27548A', "#547792")
@@ -306,6 +308,16 @@ class HomeWindow:
             if date.endswith(f"{self.chosen_month}, {self.chosen_year}"):
                 plot_data[0].append(date.split()[0])
                 plot_data[1].append(value[special_keys[4]])
+        
+        year = int(self.chosen_year)
+        no_of_days = DAYS[[i for i in range(len(MONTHS)) if MONTHS[i].startswith(self.chosen_month)][0]]
+        if self.chosen_month=='Feb' and (year%4==0 or (year%100==0 and year%400==0)):
+            no_of_days = 29
+        for day in ['0'+str(i) if i<10 else i for i in range(1, no_of_days+1)]:
+            if day not in plot_data[0]:
+                plot_data[0].append(day)
+                plot_data[1].append(0)
+
 
         figure = plt.Figure(figsize=(10,5), dpi=70)
         figure_plot = figure.add_subplot(1, 1, 1)
@@ -415,9 +427,8 @@ class HomeWindow:
             for month_name in MONTHS:
                 month = month_name[:3]
                 money = self.calculate_month_total(month, self.chosen_year_alone)
-                if money:
-                    plot_data[0].append(month)
-                    plot_data[1].append(money)
+                plot_data[0].append(month)
+                plot_data[1].append(money)
 
         figure = plt.Figure(figsize=(10,5), dpi=70)
         figure_plot = figure.add_subplot(1, 1, 1)
