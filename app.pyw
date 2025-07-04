@@ -313,11 +313,10 @@ class HomeWindow:
         no_of_days = DAYS[[i for i in range(len(MONTHS)) if MONTHS[i].startswith(self.chosen_month)][0]]
         if self.chosen_month=='Feb' and (year%4==0 or (year%100==0 and year%400==0)):
             no_of_days = 29
-        for day in ['0'+str(i) if i<10 else i for i in range(1, no_of_days+1)]:
+        for day in ['0'+str(i) if i<10 else str(i) for i in range(1, no_of_days+1)]:
             if day not in plot_data[0]:
                 plot_data[0].append(day)
                 plot_data[1].append(0)
-
 
         figure = plt.Figure(figsize=(10,5), dpi=70)
         figure_plot = figure.add_subplot(1, 1, 1)
