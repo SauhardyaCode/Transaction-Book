@@ -161,15 +161,17 @@ class BroilerPlate(tk.Tk):
         for widget in self.main_frame.winfo_children():
             widget.destroy()
         btnClicked.config(state='disabled')
-        WindowClass(self.main_frame)
+        WindowClass(self.main_frame, self)
     
     def show(self):
-        HomeWindow(self.main_frame)
+        HomeWindow(self.main_frame, self)
         self.mainloop()
 
 class HomeWindow:
-    def __init__(self, main_frame):
+    def __init__(self, main_frame, root):
         global instructions
+        self.root = root
+        self.is_zooming = False
         instructions[0].set(instruction_str[0][2])
         instructions[1].set(instruction_str[1][2])
         self.current_month = datetime.now().strftime("%b")
@@ -335,6 +337,49 @@ class HomeWindow:
         figure_plot.set_ylabel("Net Transaction")
         figure_plot.legend()
 
+        # ZOOM Controls for Graph
+        original_ylim = figure_plot.get_ylim()
+        base_scale = 1.02
+
+        def switch_flag_in(val):
+            self.is_zooming = val
+            zoom_in()
+        def switch_flag_out(val):
+            self.is_zooming = val
+            zoom_out()
+        def reset_zoom():
+            figure_plot.set_ylim(*original_ylim)
+            canvas.draw()
+        def zoom_in():
+            if self.is_zooming:
+                current_ylim = figure_plot.get_ylim()
+                new_max0 = min(current_ylim[0] / base_scale, -0.1)
+                new_max1 = max(current_ylim[1] / base_scale, 0.1)
+                figure_plot.set_ylim(new_max0, new_max1)
+                canvas.draw()
+                self.root.after(20, zoom_in)
+        def zoom_out():
+            if self.is_zooming:
+                current_ylim = figure_plot.get_ylim()
+                new_max0 = max(current_ylim[0] * base_scale, original_ylim[0] * 5)
+                new_max1 = min(current_ylim[1] * base_scale, original_ylim[1] * 5)
+                figure_plot.set_ylim(new_max0, new_max1)
+                canvas.draw()
+                self.root.after(20, zoom_out)
+                
+        self.zoom_frame = tk.Frame(self.month_stats_frame)
+        self.zoom_frame.grid(row=0, column=2, padx=(30,0))
+        in_zoomer = tk.Button(self.zoom_frame, text="Zoom In (+)")
+        in_zoomer.grid(row=0, column=0)
+        in_zoomer.bind("<Button-1>", lambda ev: switch_flag_in(True))
+        in_zoomer.bind("<ButtonRelease-1>", lambda ev: switch_flag_in(False))
+        out_zoomer = tk.Button(self.zoom_frame, text="Zoom Out (-)")
+        out_zoomer.grid(row=1, column=0)
+        out_zoomer.bind("<Button-1>", lambda ev: switch_flag_out(True))
+        out_zoomer.bind("<ButtonRelease-1>", lambda ev: switch_flag_out(False))
+        reset_zoomer = tk.Button(self.zoom_frame, text="Reset Zoom", command=reset_zoom)
+        reset_zoomer.grid(row=2, column=0)
+
         canvas = FigureCanvasTkAgg(figure, master=self.month_stats_frame)
         figure.tight_layout()
         canvas.draw()
@@ -451,6 +496,47 @@ class HomeWindow:
         Patch(facecolor='green', edgecolor='green', alpha=0.5, label='Credit')
         ]
         figure_plot.legend(handles=legend_elements, loc='upper left')
+
+        # ZOOM Controls for Graph
+        original_ylim = figure_plot.get_ylim()
+        base_scale = 1.02
+
+        def switch_flag_in(val):
+            self.is_zooming = val
+            zoom_in()
+        def switch_flag_out(val):
+            self.is_zooming = val
+            zoom_out()
+        def reset_zoom():
+            figure_plot.set_ylim(*original_ylim)
+            canvas.draw()
+        def zoom_in():
+            if self.is_zooming:
+                current_ylim = figure_plot.get_ylim()
+                new_max = max(current_ylim[1] / base_scale, 0.1)
+                figure_plot.set_ylim(0, new_max)
+                canvas.draw()
+                self.root.after(20, zoom_in)
+        def zoom_out():
+            if self.is_zooming:
+                current_ylim = figure_plot.get_ylim()
+                new_max = min(current_ylim[1] * base_scale, original_ylim[1] * 5)
+                figure_plot.set_ylim(0, new_max)
+                canvas.draw()
+                self.root.after(20, zoom_out)
+                
+        self.zoom_frame = tk.Frame(self.year_stats_frame)
+        self.zoom_frame.grid(row=0, column=2, padx=(30,0))
+        in_zoomer = tk.Button(self.zoom_frame, text="Zoom In (+)")
+        in_zoomer.grid(row=0, column=0)
+        in_zoomer.bind("<Button-1>", lambda ev: switch_flag_in(True))
+        in_zoomer.bind("<ButtonRelease-1>", lambda ev: switch_flag_in(False))
+        out_zoomer = tk.Button(self.zoom_frame, text="Zoom Out (-)")
+        out_zoomer.grid(row=1, column=0)
+        out_zoomer.bind("<Button-1>", lambda ev: switch_flag_out(True))
+        out_zoomer.bind("<ButtonRelease-1>", lambda ev: switch_flag_out(False))
+        reset_zoomer = tk.Button(self.zoom_frame, text="Reset Zoom", command=reset_zoom)
+        reset_zoomer.grid(row=2, column=0)
         
         canvas = FigureCanvasTkAgg(figure, master=self.year_stats_frame)
         figure.tight_layout()
@@ -458,7 +544,7 @@ class HomeWindow:
         return canvas
           
 class UnsettledWindow:
-    def __init__(self, main_frame):
+    def __init__(self, main_frame, root):
         global instructions
         instructions[0].set(instruction_str[0][0])
         instructions[1].set(instruction_str[1][0])
@@ -500,8 +586,9 @@ class UnsettledWindow:
     
     def show_unsettled(self):
         unsettled_dict = read_data()["unsettled"]
+        sorted_dict = dict(sorted(unsettled_dict.items(), key=lambda item: abs(item[1]), reverse=True))
         self.unsettled_elements = []
-        for person, amount in list(unsettled_dict.items()):
+        for person, amount in list(sorted_dict.items()):
             slno = len(self.unsettled_elements)+1
 
             slnoValue = tk.Label(self.display_frame, text=f"{slno}.", font=("Robota", 15), bg=bg_for_main_frame)
@@ -544,7 +631,7 @@ class UnsettledWindow:
         self.show_unsettled()
 
 class AddTransWindow:
-    def __init__(self, main_frame):
+    def __init__(self, main_frame, root):
         global instructions
         instructions[0].set(instruction_str[0][1])
         instructions[1].set(instruction_str[1][1])
